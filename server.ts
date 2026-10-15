@@ -29,10 +29,12 @@ const ai = new GoogleGenAI({
   },
 });
 
-// 1. API: Guided Autonomy AI Video Director (Gemini 3.8 Flash)
+// 1. API: Guided Autonomy AI Video Director (Gemini 3.8 Flash - Catálogo Integral 15 Grupos)
 app.post('/api/director/guided-autonomy', async (req, res) => {
   try {
     const { 
+      blockCount = 1,
+      blockScripts = [],
       scriptBlock1, 
       scriptBlock2, 
       visualIdea, 
@@ -40,30 +42,36 @@ app.post('/api/director/guided-autonomy', async (req, res) => {
       preferences = [] 
     } = req.body;
 
-    const speechText = [scriptBlock1, scriptBlock2].filter(Boolean).join(' ');
+    const activeBlocks: string[] = Array.isArray(blockScripts) && blockScripts.length > 0
+      ? blockScripts.slice(0, blockCount)
+      : [scriptBlock1, scriptBlock2].filter(Boolean);
 
-    const systemInstruction = `Você atua como um sistema inteligente de direção audiovisual de cinema (CÉREBRO AUTÔNOMO V4.0 - GUIDED AUTONOMY).
-Sua função é interpretar a intenção do usuário, a fala e as preferências selecionadas, compor cenas dinâmicas, cinematográficas e altamente variáveis, e retornar essas decisões estritamente estruturadas em JSON.
+    const systemInstruction = `Você atua como um sistema inteligente de direção audiovisual de cinema (CÉREBRO AUTÔNOMO V4.0 — CATÁLOGO INTEGRAL 15 GRUPOS).
+Sua função é interpretar a intenção do usuário, a cronologia das falas (de 1 a 6 blocos de 10s), a ideia visual e as tags de preferência enviadas pelo painel direito (Guided Autonomy), compor cenas cinematográficas e retornar suas decisões estritamente em JSON estruturado.
 
-REGRAS RÍGIDAS DE DIREÇÃO:
-1. DIRETOR DE ARTE & ANÁLISE (direcao_de_arte_analise):
-   - Escreva um texto longo e aprofundado em tom de Diretor de Cinema experiente.
-   - Justifique o PORQUÊ escolheu as ferramentas, lentes, iluminação, postura e posições de tela.
-   - Avalie as preferências enviadas pelo usuário em "preferences". Se o usuário selecionou tags que não fazem sentido com a dramaticidade ou seriedade da fala (ex: luz néon para diagnóstico grave, ou órbita 360 para assunto íntimo), explique com autoridade por que você as descartou ou adaptou.
-   - Justifique a iluminação, a câmera e a posição da caixa Z-Depth baseada no sentimento e peso do roteiro.
-2. AUDITORIA: 3 linhas resumidas em PT-BR explicando o motor, cenário, luz e cadência da fala.
-3. MOTOR ESCOLHIDO: "VOICEOVER" | "LIPSYNC" | "V2V".
-4. DESCRICOES VISUAIS EM INGLÊS TÉCNICO CINEMATOGRÁFICO:
-   - "descricao_curta_cena_1": max 45 palavras em inglês técnico cinematográfico (0-5s).
-   - "descricao_curta_cena_2": max 45 palavras em inglês técnico (5-10s ou continuação). Se não houver bloco 2, componha o segundo ato dos 10s.
-5. FALA E REGRAS: Preservar estritamente o Português do Brasil neutro e cadência de 1.2x.`;
+CATÁLOGO TÉCNICO DOS 15 GRUPOS DISPONÍVEIS:
+- Perfis Biomecânicos (1 a 6): 1=Segurança, 2=Empatia, 3=Simpatia (sem dentes), 4=Hilário Elegante, 5=Preocupado Profissional, 6=Reflexivo.
+- Cenários: consultorio, estudio_broadcast, escritorio_executivo, campo_sol_06, campo_sol_10, campo_sol_12, campo_sol_17, campo_aberto, rua_urbana, calçadao_praia, elevador_metalico, carro_movimento.
+- Iluminação: estudio_balanceado, warm_amber, clinical_silver, biotec_cyan, neon_bicolor, chiaroscuro, rim_light, dimming_narrativo.
+- Lentes/Distância: macro_20cm, curta_1m, medio_85mm, inter_5m, longa_10m, close_up, plano_americano, ots_esquerdo.
+- Movimento: estatico, push_in_3m, pull_out, snap_zoom, orbital_tilt, pedestal_float, parallax_pan, dolly_lateral.
+- Ângulos: frontal, perfil_45, perfil_90, plongee, contra_plongee.
+- Arquitetura Z-Depth: sem_caixa, topo_headroom, atras_gigante, lateral_perspectiva.
+- Microfones: shure_congelado, moeda_mao, deadcat_mao, lapela_discreto, sem_microfone.
+- Tons: Alerta, Empatico, Cientifico, Inspirador, Tensao, Propositivo, Simpatia, Reflexivo.
 
-    const prompt = `Analise e dirija o seguinte projeto de vídeo:
-- Molde Mestre Sugerido: ${masterMode || 'LIPSYNC'}
-- Roteiro Bloco 1 (0-10s): "${scriptBlock1 || ''}"
-- Roteiro Bloco 2 (Continuação 10-20s): "${scriptBlock2 || 'Nenhum'}"
-- Ideia Visual da Cena: "${visualIdea || 'Direção cinematográfica profissional com autoridade e naturalidade.'}"
-- Preferências / Tags Selecionadas pelo Usuário (Guided Autonomy): ${preferences.length > 0 ? preferences.join(', ') : 'Nenhuma tag forçada (Autonomia Plena do Diretor)'}
+REGRAS:
+1. "direcao_de_arte_analise": Texto aprofundado em tom de Diretor de Cinema. Explique a cronologia dos blocos, justifique o enquadramento, luz e Z-Depth. Avalie CADA uma das preferências selecionadas pelo usuário em "preferences": se fizer sentido, aprove; se for conflitante ou inadequada ao tom da fala, justifique com autoridade cinematográfica a adaptação ou descarte.
+2. "auditoria_ptbr": Resumo executivo de 3 linhas sobre a direção geral e cronologia dos blocos.
+3. "cenas_cronologicas": Gere para cada um dos blocos ativos (1 a ${activeBlocks.length}) a descrição técnica de 0-5s (ato 1) e 5-10s (ato 2) em PT e EN (máx 45 palavras por ato).`;
+
+    const prompt = `Analise e dirija o seguinte projeto de vídeo cinematográfico:
+- Molde Mestre: ${masterMode || 'lipsync'}
+- Quantidade de Blocos: ${activeBlocks.length} bloco(s) de 10s (Duração total: ${activeBlocks.length * 10}s a 1.2x)
+- Roteiros por Bloco:
+${activeBlocks.map((s, idx) => `  Bloco ${idx + 1} (${idx * 10}-${(idx + 1) * 10}s): "${s}"`).join('\n')}
+- Ideia Visual da Cena: "${visualIdea || 'Especialista em ambiente profissional com iluminação e enquadramento de alta autoridade.'}"
+- Preferências / Tags Selecionadas (Guided Autonomy): ${preferences.length > 0 ? preferences.join(', ') : 'Nenhuma tag forçada (Autonomia Plena do Diretor)'}
 
 Gere o JSON estrito conforme o schema.`;
 
@@ -79,61 +87,91 @@ Gere o JSON estrito conforme o schema.`;
           properties: {
             auditoria_ptbr: {
               type: Type.STRING,
-              description: 'Resumo rápido de 3 linhas das escolhas criativas em PT-BR.'
+              description: 'Resumo executivo de 3 linhas das escolhas criativas em PT-BR.'
             },
             direcao_de_arte_analise: {
               type: Type.STRING,
-              description: 'Texto longo e detalhado. Explique como um Diretor de Cinema o PORQUÊ você escolheu as ferramentas X e Y. Se o usuário sugeriu preferências no payload que não faziam sentido para a cena, explique o porquê você as ignorou ou adaptou. Justifique a iluminação, a câmera e a posição da caixa baseada no sentimento do roteiro.'
+              description: 'Texto longo e detalhado explicando o PORQUÊ de cada escolha e justificando a aprovação ou descarte de cada preferência do usuário.'
             },
             motor_escolhido: {
               type: Type.STRING,
-              enum: ['VOICEOVER', 'LIPSYNC', 'V2V']
+              enum: ['voiceover', 'lipsync', 'video_to_video']
+            },
+            perfil_id: {
+              type: Type.INTEGER,
+              description: 'ID do Perfil Biomecânico de 1 a 6'
+            },
+            cenario_id: {
+              type: Type.STRING,
+              description: 'ID do Cenário no catálogo'
+            },
+            iluminacao_id: {
+              type: Type.STRING,
+              description: 'ID da Iluminação no catálogo'
+            },
+            lente_id: {
+              type: Type.STRING,
+              description: 'ID da Lente/Distância no catálogo'
+            },
+            movimento_id: {
+              type: Type.STRING,
+              description: 'ID do Movimento de Câmera no catálogo'
+            },
+            angulo_id: {
+              type: Type.STRING,
+              description: 'ID do Ângulo no catálogo'
+            },
+            zdepth_id: {
+              type: Type.STRING,
+              enum: ['sem_caixa', 'topo_headroom', 'atras_gigante', 'lateral_perspectiva']
+            },
+            microfone_id: {
+              type: Type.STRING,
+              description: 'ID do Microfone no catálogo'
+            },
+            tom_id: {
+              type: Type.STRING,
+              description: 'ID do Tom Emocional no catálogo'
             },
             descricao_curta_cena_1: {
               type: Type.STRING,
-              description: 'English technical description of camera, lighting, and action for 0-5s (max 45 words).'
+              description: 'English technical description for scene 1 (max 45 words).'
             },
             descricao_curta_cena_2: {
               type: Type.STRING,
-              description: 'English technical description of camera, lighting, and action for 5-10s (max 45 words - empty if no block 2).'
+              description: 'English technical description for scene 2 (max 45 words).'
             },
-            tom_narracao: {
-              type: Type.STRING,
-              description: 'Empático | Confiável | Inspirador | Alerta...'
-            },
-            perfil_corporal: {
-              type: Type.STRING,
-              description: 'Perfil 1 (Segurança) | Perfil 2 (Empatia)...'
-            },
-            camera_e_luz_cena: {
-              type: Type.STRING,
-              description: 'English description of camera angle, lens, and lighting style.'
-            },
-            tipo_microfone: {
-              type: Type.STRING,
-              description: 'Tipo de microfone em cena (ex: Lapela Presa na Gola, Shure Articulado, Sem Microfone)'
-            },
-            elemento_motion_zdepth: {
-              type: Type.STRING,
-              description: 'English description of the Z-Depth architecture, textures, and UI elements.'
-            },
-            som_cena_1: {
-              type: Type.STRING,
-              description: 'Subtle ambient room tone, soft glass whoosh UI effect.'
+            cenas_cronologicas: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  bloco: { type: Type.INTEGER },
+                  ato_1_pt: { type: Type.STRING },
+                  ato_1_en: { type: Type.STRING },
+                  ato_2_pt: { type: Type.STRING },
+                  ato_2_en: { type: Type.STRING },
+                  motion_pt: { type: Type.STRING },
+                  motion_en: { type: Type.STRING },
+                  som_pt: { type: Type.STRING },
+                  som_en: { type: Type.STRING }
+                },
+                required: ['bloco', 'ato_1_pt', 'ato_1_en', 'ato_2_pt', 'ato_2_en']
+              }
             }
           },
           required: [
             'auditoria_ptbr',
             'direcao_de_arte_analise',
             'motor_escolhido',
-            'descricao_curta_cena_1',
-            'descricao_curta_cena_2',
-            'tom_narracao',
-            'perfil_corporal',
-            'camera_e_luz_cena',
-            'tipo_microfone',
-            'elemento_motion_zdepth',
-            'som_cena_1'
+            'perfil_id',
+            'cenario_id',
+            'iluminacao_id',
+            'lente_id',
+            'movimento_id',
+            'angulo_id',
+            'zdepth_id',
+            'microfone_id'
           ]
         }
       }

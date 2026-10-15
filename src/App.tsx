@@ -16,7 +16,8 @@ import {
   SceneDirectiveState, 
   createDefaultSceneState, 
   compileScene, 
-  applyQuickNaturalChange 
+  applyQuickNaturalChange,
+  evaluateGuidedAutonomyLocally
 } from './engine/directorRules';
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
     }));
   };
 
-  // BLOCO 2: Processamento de Mudança Rápida (NLP Fast Engine)
+  // Processamento de Mudança Rápida (NLP Fast Engine)
   const handleApplyQuickChange = (request: string) => {
     const { updatedState, changeLog } = applyQuickNaturalChange(sceneState, request);
     setSceneState(updatedState);
@@ -52,16 +53,20 @@ export default function App() {
     showToast('Ajuste aplicado com sucesso!');
   };
 
-  // Botão "⚡ Criar Direção Inteligente" via Guided Autonomy API (Gemini 3.8 Flash)
+  // Botão "⚡ Criar Direção Inteligente" via Guided Autonomy API (Gemini 3.8 Flash + Fallback Local Robusto)
   const handleGenerateSmartDirection = async () => {
     setIsGenerating(true);
+    const activeScripts = (sceneState.blockScripts || []).slice(0, sceneState.blockCount || 1);
+
     try {
       const res = await fetch('/api/director/guided-autonomy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          scriptBlock1: sceneState.speechBlock1,
-          scriptBlock2: sceneState.speechBlock2,
+          blockCount: sceneState.blockCount || 1,
+          blockScripts: activeScripts,
+          scriptBlock1: activeScripts[0] || sceneState.speechBlock1 || '',
+          scriptBlock2: activeScripts[1] || sceneState.speechBlock2 || '',
           visualIdea: sceneState.visualIdea,
           masterMode: sceneState.masterMode,
           preferences: sceneState.preferences || []
@@ -71,59 +76,88 @@ export default function App() {
       if (res.ok) {
         const data = await res.json();
         
-        setSceneState((prev) => ({
-          ...prev,
-          directorReasoning: data.direcao_de_arte_analise || prev.directorReasoning,
-          visualIdea: data.descricao_curta_cena_1 
-            ? `${data.descricao_curta_cena_1}${data.descricao_curta_cena_2 ? ' ' + data.descricao_curta_cena_2 : ''}`
-            : prev.visualIdea
-        }));
+        setSceneState((prev) => {
+          const updated = { ...prev };
+          if (data.direcao_de_arte_analise) updated.directorReasoning = data.direcao_de_arte_analise;
+          if (data.motor_escolhido) updated.masterMode = data.motor_escolhido.toLowerCase().replace('-', '_');
+          if (data.perfil_id) updated.bodyProfileId = data.perfil_id;
+          if (data.cenario_id) updated.scenarioId = data.cenario_id;
+          if (data.iluminacao_id) updated.lightingId = data.iluminacao_id;
+          if (data.lente_id) updated.lensFramingId = data.lente_id;
+          if (data.movimento_id) updated.cameraMovementId = data.movimento_id;
+          if (data.angulo_id) updated.cameraAngleId = data.angulo_id;
+          if (data.zdepth_id) updated.zDepthBoxId = data.zdepth_id;
+          if (data.microfone_id) updated.microphoneId = data.microfone_id;
+          if (data.tom_id) updated.emotionalToneId = data.tom_id;
+
+          if (data.cenas_cronologicas && data.cenas_cronologicas.length > 0) {
+            updated.visualIdea = data.cenas_cronologicas
+              .map((c: any) => `Bloco ${c.bloco}: ${c.ato_1_pt} ${c.ato_2_pt}`)
+              .join(' | ');
+          } else if (data.descricao_curta_cena_1) {
+            updated.visualIdea = `${data.descricao_curta_cena_1}${data.descricao_curta_cena_2 ? ' ' + data.descricao_curta_cena_2 : ''}`;
+          }
+
+          return updated;
+        });
 
         showToast('Direção de Arte e Raciocínio calculados pelo Diretor!');
       } else {
-        showToast('Direção local recalculada com sucesso!');
+        // Fallback local robusto baseado no catálogo completo dos 15 grupos
+        const { updatedState, auditSummary } = evaluateGuidedAutonomyLocally(sceneState);
+        setSceneState(updatedState);
+        showToast('Direção recalculada localmente pelo Diretor!');
       }
     } catch {
       // Fallback local robusto
-      showToast('Direção local recalculada com sucesso!');
+      const { updatedState } = evaluateGuidedAutonomyLocally(sceneState);
+      setSceneState(updatedState);
+      showToast('Direção recalculada localmente pelo Diretor!');
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handleSelectPreset = (p: HeaderPreset) => {
-    setSceneState((prev) => ({
-      ...prev,
-      masterMode: p.masterMode,
-      speechBlock1: p.speechText,
-      speechBlock2: '',
-      speechText: p.speechText,
-      visualIdea: p.visualIdea,
-      bodyProfileId: p.bodyProfileId,
-      zDepthBoxId: p.zDepthBoxId,
-      scenarioId: p.scenarioId,
-      lightingId: p.lightingId
-    }));
+    setSceneState((prev) => {
+      const updatedScripts = [...(prev.blockScripts || [])];
+      updatedScripts[0] = p.speechText;
+      return {
+        ...prev,
+        masterMode: p.masterMode,
+        blockScripts: updatedScripts,
+        speechBlock1: p.speechText,
+        speechText: p.speechText,
+        visualIdea: p.visualIdea,
+        bodyProfileId: p.bodyProfileId,
+        zDepthBoxId: p.zDepthBoxId,
+        scenarioId: p.scenarioId,
+        lightingId: p.lightingId
+      };
+    });
     setQuickChangeLog(`Pré-configuração "${p.title}" aplicada com sucesso.`);
     showToast(`Carregado: ${p.title}`);
   };
 
   const handleCopyText = (text: string, label: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      showToast(`${label} copiado para a área de transferência!`);
+      showToast(`${label} copiado!`);
     }).catch(() => {
       showToast('Falha ao copiar.');
     });
   };
 
   const handleCopyAllEN = () => {
-    handleCopyText(compiled.promptEn, 'Prompt Técnico (EN)');
+    // Copia todos os blocos ativos em inglês
+    const allEn = compiled.blocks.map(b => `// === BLOCO ${b.blockNumber} ===\n${b.promptEn}`).join('\n\n');
+    handleCopyText(allEn, 'Todos os Blocos (EN)');
     setCopiedType('en');
     setTimeout(() => setCopiedType(null), 2000);
   };
 
   const handleCopySpeechPT = () => {
-    const fullSpeech = sceneState.speechBlock1.trim() + (sceneState.speechBlock2.trim() ? ' ' + sceneState.speechBlock2.trim() : '');
+    const activeScripts = (sceneState.blockScripts || []).slice(0, sceneState.blockCount || 1);
+    const fullSpeech = activeScripts.join(' ');
     handleCopyText(fullSpeech, 'Roteiro da Fala (PT-BR)');
     setCopiedType('pt');
     setTimeout(() => setCopiedType(null), 2000);
@@ -131,7 +165,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#080a0f] text-slate-200 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
-      {/* Header Superior com fontes maiores */}
+      {/* Header Superior */}
       <Header
         onSelectPreset={handleSelectPreset}
         onCopyAllEN={handleCopyAllEN}
@@ -139,21 +173,19 @@ export default function App() {
         copiedType={copiedType}
       />
 
-      {/* Grid Principal dos 3 Painéis com espaçamento harmônico */}
+      {/* Grid Principal dos 3 Painéis */}
       <div className="flex-1 max-w-[1920px] w-full mx-auto p-4 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Painel Esquerdo: Configuração Mestre e Roteiro */}
+        {/* Painel Esquerdo: Molde Mestre, Seletor 1 a 6 e Roteiros estritos */}
         <div className="lg:col-span-4 h-fit">
           <LeftPanel
             state={sceneState}
-            wordAnalysisBlock1={compiled.wordAnalysisBlock1}
-            wordAnalysisBlock2={compiled.wordAnalysisBlock2}
             onUpdateState={handleUpdateState}
             onGenerateSmartDirection={handleGenerateSmartDirection}
             isGenerating={isGenerating}
           />
         </div>
 
-        {/* Painel Central: Raciocínio do Diretor, Auditoria, Mudança Rápida e Saída Compilada */}
+        {/* Painel Central: Objetivo, exibindo estritamente Bloco X + EN / PT / Copiar + Prompt */}
         <div className="lg:col-span-5 h-fit">
           <CenterPanel
             compiled={compiled}
@@ -176,7 +208,7 @@ export default function App() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-black font-black text-sm px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-black font-black text-xs sm:text-sm px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2 animate-bounce">
           <span>{toastMessage}</span>
         </div>
       )}

@@ -2,7 +2,7 @@
 
 @layer base {
   html {
-    font-size: 120%; /* Aumento de 20% em todas as fontes base */
+    font-size: 108%; /* Ajustado: redução de 10% no tamanho geral das fontes */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

@@ -1,8 +1,9 @@
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
- * 
- * Catálogo Completo dos 13 Grupos Técnicos da Super-Skill Omni Video Director Pro v3.0
+ *
+ * Catálogo Integral Sincronizado (15 Grupos Técnicos + Guided Autonomy)
+ * Super-Skill Omni Video Director Pro v4.0
  */
 
 export interface MasterTemplateDef {
@@ -15,21 +16,21 @@ export interface MasterTemplateDef {
 export const MASTER_TEMPLATES: MasterTemplateDef[] = [
   {
     id: 'voiceover',
-    name: '1. Voiceover & B-Roll (Imagem para Vídeo)',
-    badge: 'VOICEOVER 10s',
-    desc: 'Lábios 100% selados (00:00-10:00), respiração nasal, narração em off límpida com cortes dinâmicos de cena.'
+    name: '1. Voiceover & B-Roll (Imagem - Vídeo)',
+    badge: 'VOICEOVER',
+    desc: 'Lábios 100% selados (00:00-10:00), respiração nasal, narração em off com cortes dinâmicos.'
   },
   {
     id: 'lipsync',
-    name: '2. Talking-Head Lip-Sync (Vídeo Mestre 2K)',
-    badge: 'LIP-SYNC 2K',
-    desc: 'Apresentador frontal/médio, autoridade, dentes ocultos, sincronia labial orgânica com bloqueio facial total.'
+    name: '2. Talking-Head Lip-Sync (Texto - Vídeo)',
+    badge: 'LIP-SYNC',
+    desc: 'Apresentador frontal/médio, autoridade, dentes ocultos, sincronia labial orgânica.'
   },
   {
     id: 'video_to_video',
     name: '3. Vídeo para Vídeo (Z-Depth & Cadência)',
-    badge: 'VIDEO-TO-VIDEO',
-    desc: 'Preserva cadência e microexpressões do vídeo base, alterando áudio, camadas espaciais e iluminação.'
+    badge: 'V2V',
+    desc: 'Preserva cadência do vídeo base, alterando áudio, camadas espaciais e iluminação.'
   }
 ];
 
@@ -95,21 +96,45 @@ export const SCENARIO_CATALOG: ScenarioOption[] = [
   },
   {
     id: 'estudio_broadcast',
-    name: 'Estúdio Broadcast Minimalista',
-    ptDesc: 'Estúdio broadcast acústico com parede neutra fosca, iluminação volumétrica balanceada e atmosfera sóbria',
-    enDesc: 'Minimalist sound-treated broadcast studio with matte neutral backdrop, balanced volumetric key lighting and clean aesthetic'
+    name: 'Studio Profissional',
+    ptDesc: 'Fundo infinito minimalista iluminado sem reverberação acústica e atmosfera sóbria',
+    enDesc: 'Minimalist sound-treated professional studio with infinite matte backdrop and zero acoustic reverb'
   },
   {
     id: 'escritorio_executivo',
-    name: 'Escritório Executivo / Home Office',
-    ptDesc: 'Home office executivo contemporâneo com mesa de carvalho, laptop sutil e estante desbotada ao fundo',
-    enDesc: 'Contemporary executive home office with clean oak desk, subtle laptop and softly blurred bookshelf background'
+    name: 'Home Office',
+    ptDesc: 'Ambiente corporativo acolhedor com mesa de carvalho, luz suave e silencioso',
+    enDesc: 'Warm corporate home office with oak desk, soft ambient lighting and silent acoustics'
+  },
+  {
+    id: 'campo_sol_06',
+    name: 'Campo Aberto (Sol 06:00)',
+    ptDesc: 'Campo aberto com luz solar rasante dourada matinal direta',
+    enDesc: 'Open natural field with direct golden low-angle 06:00 AM morning sunlight'
+  },
+  {
+    id: 'campo_sol_10',
+    name: 'Campo Aberto (Sol 10:00)',
+    ptDesc: 'Campo aberto com iluminação natural limpa das 10:00 e sombras médias',
+    enDesc: 'Open field with crisp 10:00 AM natural daylight and balanced medium shadows'
+  },
+  {
+    id: 'campo_sol_12',
+    name: 'Campo Aberto (Sol 12:00)',
+    ptDesc: 'Campo aberto com luz zenital vertical de alto contraste ao meio-dia',
+    enDesc: 'Open field under vertical high-contrast 12:00 PM zenith sunlight'
+  },
+  {
+    id: 'campo_sol_17',
+    name: 'Campo Aberto (Sol 17:00)',
+    ptDesc: 'Campo aberto com luz do entardecer alaranjada das 17:00 e sombras longas',
+    enDesc: 'Open field bathed in warm orange 05:00 PM sunset light with long dramatic shadows'
   },
   {
     id: 'campo_aberto',
-    name: 'Campo Aberto / Gramado / Natureza',
-    ptDesc: 'Ambiente externo em gramado ensolarado suave com luz dourada natural e brisa sutil',
-    enDesc: 'Open outdoor natural lawn with soft golden-hour natural illumination and subtle atmospheric breeze'
+    name: 'Campo Aberto Filtrado',
+    ptDesc: 'Luz difusa filtrada por vegetação com áudio natural baixo e brisa sutil',
+    enDesc: 'Open outdoor greenery with sunlight diffused through tree leaves and quiet nature ambiance'
   },
   {
     id: 'rua_urbana',
@@ -119,15 +144,21 @@ export const SCENARIO_CATALOG: ScenarioOption[] = [
   },
   {
     id: 'calçadao_praia',
-    name: 'Calçadão da Praia / Orla',
-    ptDesc: 'Calçadão litorâneo luminoso com horizonte marítimo desfocado e iluminação clara e arejada',
-    enDesc: 'Coastal seaside promenade with smoothly blurred oceanic horizon and crisp luminous lighting'
+    name: 'Calçadão de Praia',
+    ptDesc: 'Iluminação litorânea vibrante com horizonte marítimo desfocado e áudio suave ao fundo',
+    enDesc: 'Vibrant coastal promenade with blurred ocean horizon and soft ambient background'
+  },
+  {
+    id: 'elevador_metalico',
+    name: 'Elevador Metálico',
+    ptDesc: 'Interior de elevador moderno com superfícies reflexivas escovadas para cortes rápidos sem ruído',
+    enDesc: 'Modern brushed-metal elevator interior with sleek reflective surfaces and silent acoustics'
   },
   {
     id: 'carro_movimento',
-    name: 'Interior de Veículo / Carro',
-    ptDesc: 'Interior minimalista de carro moderno com iluminação difusa através dos vidros e dinâmica elegante',
-    enDesc: 'Modern sleek vehicle interior with diffused natural glass lighting and elegant calm dynamics'
+    name: 'Interior Veicular (Hyundai HB20S)',
+    ptDesc: 'Habitáculo automotivo fechado de Hyundai HB20S com luz natural difusa de cabine',
+    enDesc: 'Closed Hyundai HB20S vehicle cabin interior with natural diffused window daylight'
   }
 ];
 
@@ -141,27 +172,33 @@ export interface MicrophoneOption {
 export const MICROPHONE_OPTIONS: MicrophoneOption[] = [
   {
     id: 'shure_congelado',
-    name: 'Braço articulado Shure congelado',
-    ptDesc: 'Braço articulado Shure com microfone profissional congelado na posição lateral',
-    enDesc: 'Shure articulated broadcast boom arm with professional microphone frozen in exact lateral position'
+    name: 'Braço Articulado Baixo',
+    ptDesc: 'Microfone broadcast em braço articulado baixo fixado discretamente na bancada',
+    enDesc: 'Low-profile articulated broadcast boom arm microphone discreetly fixed on desk'
+  },
+  {
+    id: 'mic_moeda',
+    name: 'Microfone Moeda (Mão)',
+    ptDesc: 'Cápsula magnética circular estilo moeda segurada rente ao queixo',
+    enDesc: 'Coin-sized circular magnetic wireless microphone held delicately near the chin'
+  },
+  {
+    id: 'lapela_deadcat',
+    name: 'Lapela Deadcat (Mão)',
+    ptDesc: 'Microfone compacto com espuma/pelúcia deadcat segurado manualmente',
+    enDesc: 'Compact lavalier microphone with furry deadcat windscreen held in hand'
   },
   {
     id: 'lapela_discreto',
-    name: 'Microfone de lapela discreto',
-    ptDesc: 'Microfone de lapela profissional discreto fixado na gola',
-    enDesc: 'Discreet professional lavalier microphone clipped to collar'
-  },
-  {
-    id: 'microfone_mao',
-    name: 'Microfone de mão broadcast',
-    ptDesc: 'Microfone dinâmico de mão empunhado com firmeza',
-    enDesc: 'Handheld broadcast dynamic microphone held with steady posture'
+    name: 'Lapela na Gola',
+    ptDesc: 'Microfone de lapela discreto preso à gola da roupa liberando as duas mãos',
+    enDesc: 'Discreet professional lavalier microphone clipped to collar leaving hands free'
   },
   {
     id: 'sem_microfone',
-    name: 'Sem microfone visível (Clean)',
-    ptDesc: 'Nenhum microfone visível no enquadramento (estética 100% limpa)',
-    enDesc: 'No visible microphone in frame, completely clean visual composition'
+    name: 'Clean Frame (Sem Microfone)',
+    ptDesc: 'Sem microfones aparentes mantendo a imagem 100% limpa',
+    enDesc: 'Clean frame with no visible microphones in shot'
   }
 ];
 
@@ -175,27 +212,39 @@ export interface LensFramingOption {
 export const LENS_FRAMINGS: LensFramingOption[] = [
   {
     id: 'medio_85mm',
-    name: 'Plano Médio 85mm f/1.8 (45% headroom)',
-    ptDesc: 'Plano Médio (peito para cima, 45% de headroom), lente 85mm f/1.8 com bokeh suave e desfoque orgânico de fundo',
-    enDesc: 'Medium shot (chest up, 45% headroom), 85mm f/1.8 lens with creamy bokeh and organic background separation'
+    name: 'Medium Shot (Headroom 45%) — 3m',
+    ptDesc: 'Distância Média (3m), Plano Médio (peito para cima, 45% headroom), lente 85mm f/1.8 Shallow Bokeh',
+    enDesc: 'Medium distance (3m), medium shot (chest up, 45% headroom), 85mm f/1.8 lens with shallow bokeh'
   },
   {
     id: 'close_85mm',
-    name: 'Close-up Facial Suave 85mm',
-    ptDesc: 'Close-up facial suave na faixa dos olhos e ombros, lente 85mm sem distorções angulares',
-    enDesc: 'Soft facial close-up highlighting eyes and shoulders, 85mm focal length with zero facial distortion'
+    name: 'Close-Up (1m) — 85mm f/1.8',
+    ptDesc: 'Distância Curta (1m), Close-Up do tórax para cima com foco facial e fundo desfocado',
+    enDesc: 'Short distance (1m), chest-up close-up with sharp facial focus and 85mm f/1.8 shallow bokeh'
+  },
+  {
+    id: 'macro_20cm',
+    name: 'Distância Macro (20 cm)',
+    ptDesc: 'Distância Macro extrema (20 cm) focada no elemento/detalhe com desfoque traseiro de 50%',
+    enDesc: 'Extreme macro distance (20cm) focused on target detail with 50% background blur'
   },
   {
     id: 'americano_50mm',
-    name: 'Plano Americano 50mm f/1.8',
-    ptDesc: 'Plano Americano (cintura para cima), lente 50mm f/1.8 com perspectiva realista e neutra',
-    enDesc: 'Medium long shot / cowboy shot (waist up), 50mm f/1.8 lens with natural eye-level perspective'
+    name: 'Plano Americano (5m) — 50mm',
+    ptDesc: 'Distância Intermediária (5m), cintura para cima integrando bancada física, lente 50mm',
+    enDesc: 'Intermediate distance (5m), waist-up cowboy shot integrating physical desk, 50mm lens'
   },
   {
     id: 'aberto_35mm',
-    name: 'Plano Aberto Wide 35mm',
-    ptDesc: 'Plano Aberto amplo, lente 35mm cinematográfica contextualizando sujeito e profundidade de ambiente',
-    enDesc: 'Wide establishing cinematic shot, 35mm lens showcasing subject and architectural spatial depth'
+    name: 'Distância Longa (10m) — Wide 35mm',
+    ptDesc: 'Distância Longa (10m), plano geral mostrando corpo inteiro e ambiente natural em 35mm',
+    enDesc: 'Long distance (10m), full-body wide establishing shot showcasing environment, 35mm lens'
+  },
+  {
+    id: 'ots_esquerdo',
+    name: 'Over-The-Shoulder (OTS Esquerdo)',
+    ptDesc: 'Câmera posicionada nas costas desfocando o ombro esquerdo em 10% com foco nítido frontal',
+    enDesc: 'Over-the-shoulder left camera angle with 10% soft shoulder blur and sharp frontal focus'
   }
 ];
 
@@ -209,39 +258,51 @@ export interface CameraMovementOption {
 export const CAMERA_MOVEMENTS: CameraMovementOption[] = [
   {
     id: 'estatico',
-    name: 'Câmera Estática / Fixa',
-    ptDesc: 'Câmera em tripé fixo e estável, sem trepidação',
-    enDesc: 'Locked tripod static camera, perfectly stable framing'
+    name: 'Locked-Off Anchor (Câmera Travada)',
+    ptDesc: 'Câmera travada em tripé fixo focando toda a atenção nos motions gráficos',
+    enDesc: 'Locked-off static camera anchor focusing viewer attention on graphic motions'
   },
   {
     id: 'push_in_3m',
-    name: 'Aproximar Lentamente (3m ➔ Olhos)',
-    ptDesc: 'Início a ~3m de distância nos primeiros 3s, aproximando lentamente até os olhos entre 3s-7s e estabilizando',
-    enDesc: 'Starts at ~3m distance for 3s, slowly pushes in towards eye level between 3s-7s, then holds steady'
+    name: 'Slow Push-In (Zoom In 3m ➔ Olhos)',
+    ptDesc: 'Aproximação contínua de 3m até a faixa dos olhos aumentando retenção e foco',
+    enDesc: 'Continuous slow push-in from 3m towards eye level increasing retention and focus'
   },
   {
     id: 'pull_out',
-    name: 'Afastar Suavemente (Pull-Out)',
-    ptDesc: 'Afastamento gradual e suave da câmera revelando maior amplitude espacial',
-    enDesc: 'Smooth gradual pull-out camera movement gently revealing wider environmental context'
+    name: 'Slow Pull-Out (Zoom Out)',
+    ptDesc: 'Afastamento gradual revelando múltiplos elementos e infográficos ao redor',
+    enDesc: 'Gradual slow pull-out revealing surrounding spatial elements and infographics'
+  },
+  {
+    id: 'snap_zoom_out',
+    name: 'Snap Zoom-Out (1,5s)',
+    ptDesc: 'Recuo ligeiro e ágil de 1,5s quebrando o ritmo visual com dinamismo',
+    enDesc: 'Quick 1.5s snap zoom-out subtly breaking visual pacing with dynamic energy'
   },
   {
     id: 'orbita_360',
-    name: 'Órbita Suave 360° ao redor do sujeito',
-    ptDesc: 'Humano imóvel na posição central enquanto a câmera realiza órbita suave e fluida em torno do sujeito',
-    enDesc: 'Subject remains centered while camera performs a smooth, fluid 360-degree orbital motion'
+    name: '3D Orbital Arc + Tilt',
+    ptDesc: 'Rotação diagonal em arco ao redor do sujeito revelando o horizonte',
+    enDesc: '3D diagonal orbital arc rotation around subject tilting up to reveal horizon'
+  },
+  {
+    id: 'isometric_pan',
+    name: 'Isometric Parallax Pan',
+    ptDesc: 'Deslize lateral em perspectiva isométrica destacando o volume 3D dos gráficos',
+    enDesc: 'Isometric lateral parallax pan highlighting 3D thickness of floating graphics'
+  },
+  {
+    id: 'pedestal_float',
+    name: 'Pedestal Float',
+    ptDesc: 'Elevação vertical suave da câmera subindo em direção à camada gráfica superior',
+    enDesc: 'Smooth vertical pedestal float rising toward upper graphic HUD layer'
   },
   {
     id: 'dolly_lateral',
-    name: 'Dolly Lateral Suave',
-    ptDesc: 'Deslocamento lateral suave em trilho/dolly mantendo o sujeito no terço áureo',
-    enDesc: 'Smooth lateral dolly tracking shot keeping subject anchored along rule of thirds'
-  },
-  {
-    id: 'drone_suave',
-    name: 'Movimento Aéreo / Drone Suave',
-    ptDesc: 'Movimento fluido e amplo tipo drone em altitude baixa e estabilizada',
-    enDesc: 'Fluid low-altitude aerial drone camera glide with stabilized horizon'
+    name: 'Parallax Dolly Slider',
+    ptDesc: 'Deslocamento horizontal em slider revelando profundidade real entre camadas Z-Depth',
+    enDesc: 'Horizontal parallax dolly slider movement revealing depth between Z-layers'
   }
 ];
 
@@ -255,33 +316,33 @@ export interface CameraAngleOption {
 export const CAMERA_ANGLES: CameraAngleOption[] = [
   {
     id: 'frontal',
-    name: 'Frontal (Nível dos Olhos)',
-    ptDesc: 'Ângulo frontal direto ao nível dos olhos, transmitindo máxima transparência',
-    enDesc: 'Direct frontal eye-level angle, conveying maximum connection and clarity'
+    name: 'Frontal Nível dos Olhos',
+    ptDesc: 'Alinhamento direto ao nível dos olhos gerando máxima conexão e autoridade',
+    enDesc: 'Direct eye-level frontal alignment generating connection and authority'
   },
   {
     id: 'perfil_45',
-    name: 'Perfil 45° Dinâmico',
-    ptDesc: 'Ângulo em três quartos (45°), conferindo profundidade tridimensional ao rosto',
-    enDesc: 'Three-quarter 45-degree angle adding cinematic three-dimensional facial depth'
+    name: 'Perfil Dinâmico 45°',
+    ptDesc: 'Ângulo diagonal a 45° evidenciando a volumetria do espaço e do rosto',
+    enDesc: 'Dynamic 45-degree diagonal profile highlighting spatial and facial volume'
   },
   {
     id: 'lateral_90',
-    name: 'Lateral 90° (Perfil Puro)',
-    ptDesc: 'Perfil lateral a 90° com iluminação de recorte e silhueta precisa',
-    enDesc: 'Pure 90-degree side profile with rim light detailing facial contour'
+    name: 'Perfil Dinâmico 90°',
+    ptDesc: 'Ângulo lateral puro a 90° destacando silhueta e camadas espaciais',
+    enDesc: 'Pure 90-degree lateral profile emphasizing silhouette and spatial layers'
   },
   {
     id: 'plongee',
-    name: 'Plongée (De Cima para Baixo)',
-    ptDesc: 'Câmera ligeiramente elevada em ângulo plongée sutil',
-    enDesc: 'Subtle high-angle shot looking slightly downward with refined composition'
+    name: 'Plongée (Superior)',
+    ptDesc: 'Ângulo vertical levemente superior alterando a perspectiva com elegância',
+    enDesc: 'Subtle high-angle plongee perspective'
   },
   {
     id: 'contra_plongee',
-    name: 'Contra-Plongée (De Baixo para Cima)',
-    ptDesc: 'Ângulo baixo em contra-plongée suave conferindo autoridade e liderança',
-    enDesc: 'Low-angle hero perspective projecting authority and stature'
+    name: 'Contra-Plongée (Imponência)',
+    ptDesc: 'Ângulo vertical baixo conferindo imponência e liderança ao apresentador',
+    enDesc: 'Low-angle contra-plongee perspective projecting stature and authority'
   }
 ];
 
@@ -295,33 +356,39 @@ export interface LightingOption {
 export const LIGHTING_OPTIONS: LightingOption[] = [
   {
     id: 'estudio_balanceado',
-    name: 'Luz de Estúdio Balanceada',
-    ptDesc: 'Luz principal suave difusa a 45°, luz de preenchimento neutra e luz de recorte sutil nos ombros',
-    enDesc: 'Balanced studio lighting: diffused soft key at 45°, gentle fill and subtle hair rim light'
+    name: 'Chiaroscuro Studio',
+    ptDesc: 'Foco luminoso preciso no rosto com laterais e fundo suavemente escurecidos',
+    enDesc: 'Chiaroscuro studio lighting with precise facial focus and darkened surroundings'
   },
   {
     id: 'warm_amber',
-    name: 'Warm Amber (Acolhedora & Bronzeada)',
-    ptDesc: 'Luz principal quente dourada (Warm Key Light) vinda da direita, criando leve bronzeado saudável e catchlight nos olhos',
-    enDesc: 'Warm amber key light from right creating healthy radiant skin warmth and crisp ocular catchlights'
+    name: 'Luz Quente (Âmbar/Golden)',
+    ptDesc: 'Tonalidade amarelada/dourada transmitindo proximidade, saúde e conforto',
+    enDesc: 'Warm amber golden key lighting conveying warmth, health and comfort'
   },
   {
     id: 'clinical_silver',
-    name: 'Clinical Silver (Fria & Analítica)',
-    ptDesc: 'Iluminação neutra fria 5600K com alto índice de reprodução de cor e nitidez cirúrgica',
-    enDesc: 'Crisp 5600K clinical silver illumination with clinical precision and immaculate color fidelity'
+    name: 'Luz Fria (Daylight Clínica)',
+    ptDesc: 'Iluminação neutra e clara (5600K) transmitindo rigor e precisão científica',
+    enDesc: 'Crisp 5600K clinical daylight illumination conveying medical precision'
   },
   {
     id: 'biotec_cyan',
-    name: 'Biotec Cyan (Alta Tecnologia)',
-    ptDesc: 'Luz ambiente fria complementada por luz de recorte azul ciano biotecnológico',
-    enDesc: 'Cold technological ambient lighting accented by subtle biotech cyan edge backlight'
+    name: 'Luz Ciano Biotec',
+    ptDesc: 'Atmosfera fria com recorte ciano direcionada à linguagem científica avançada',
+    enDesc: 'Cold biotech cyan accented lighting tailored for advanced scientific visuals'
+  },
+  {
+    id: 'neon_bicolor',
+    name: 'Néon Bicolor (Magenta & Azul)',
+    ptDesc: 'Recortes luminosos modernos combinando magenta e azul ciano',
+    enDesc: 'Modern bicolor neon rim lighting combining magenta and cyber blue'
   },
   {
     id: 'dimming_narrativo',
-    name: 'Dimming Narrativo (Foco Dramático)',
-    ptDesc: 'Iluminação padrão que escurece suavemente (dimming) no momento de alerta e retorna ao tom original',
-    enDesc: 'Dynamic lighting subtly dimming the surroundings during the alert focal moment, then restoring balance'
+    name: 'Dimming Narrativo + Light Spill',
+    ptDesc: 'Luz que escurece suavemente no ponto crítico com reflexo diegético do card sobre os ombros',
+    enDesc: 'Narrative dimming during key phrase with diegetic HUD light spill on shoulders'
   }
 ];
 
@@ -339,7 +406,7 @@ export interface ZDepthBoxOption {
 export const ZDEPTH_BOXES: Record<string, ZDepthBoxOption> = {
   sem_caixa: {
     id: 'sem_caixa',
-    name: '1. Sem Caixa (Apresentador Puro)',
+    name: '1. Modo Zero-Texto (Apresentador Puro)',
     typographyRulePt: 'SEM TEXTO, SEM LEGENDAS, SEM TÍTULOS, SEM LOGOS, SEM TIPOGRAFIA na tela. Narrativa estritamente visual.',
     typographyRuleEn: 'NO TEXT, NO SUBTITLES, NO TITLES, NO LOGOS, NO ON-SCREEN TYPOGRAPHY. Strictly visual narrative.',
     outputRulePt: 'Nenhum elemento flutuante na tela.',
@@ -349,33 +416,33 @@ export const ZDEPTH_BOXES: Record<string, ZDepthBoxOption> = {
   },
   topo_headroom: {
     id: 'topo_headroom',
-    name: '2. Caixa Acima da Cabeça (+25% Escala, Headroom 45%)',
-    typographyRulePt: 'Sem legendas na base da tela. Renderizar exclusivamente a tipografia fina de calibre 17px dentro do Painel Espacial Glassmorphism flutuante no topo (10%-25% da tela), sem sobrepor o rosto.',
-    typographyRuleEn: 'No captions at bottom. Exclusively render crisp 17px typography inside the floating Glassmorphism HUD panel in head-space (10%-25% of frame), never occluding the face.',
-    outputRulePt: 'Painel flutuante Glassmorphism (#14110F, opacidade 88%, borda dourada champanhe de 1px) posicionado na camada superior.',
-    outputRuleEn: 'Floating Glassmorphism HUD (#14110F, 88% opacity, 1px champagne gold border) positioned in top head-space layer.',
-    ptDesc: 'Painel Glassmorphism flutuando acima da cabeça (head-space, 10%-25% superior) com borda ultrafina de 1px.',
-    enDesc: 'Glassmorphism HUD floating in top head-space (10%-25% upper frame) with 1px razor-thin border.'
+    name: '2. Top-Floating HUD (+25% Escala, Bento Grid Superior)',
+    typographyRulePt: 'Sem legendas na base da tela. Renderizar exclusivamente tipografia Sans-Serif fina (Inter/SF Pro) calibre 17px dentro do Top-Floating HUD Glassmorphism (#14110F) no topo (10%-25% da tela), sem sobrepor o rosto.',
+    typographyRuleEn: 'No bottom captions. Exclusively render crisp 17px Inter/SF Pro typography inside the Top-Floating Glassmorphism HUD (#14110F) in upper head-space (10%-25%), never occluding face.',
+    outputRulePt: 'Top-Floating HUD em Glassmorphism Fosco (#14110F, filete dourado champagne 1px, cantos 18px e soft drop shadow) posicionado acima da cabeça.',
+    outputRuleEn: 'Top-Floating HUD in Matte Glassmorphism (#14110F, 1px champagne gold hairline border, 18px rounded corners, soft drop shadow) above head.',
+    ptDesc: 'Gráficos suspensos acima da linha visual com Bento Grid ou Mini Cards.',
+    enDesc: 'Graphics suspended in upper head-space featuring Bento Grid or Mini Cards.'
   },
   atras_gigante: {
     id: 'atras_gigante',
-    name: '3. Caixa Gigante Atrás da Cabeça (Z-1) + Humano Base (30-40%)',
-    typographyRulePt: 'Sem legendas na base. Conteúdo gráfico e esquemático projetado na Camada Média Z-1 atrás dos ombros do apresentador, com tipografia nítida de calibre 17px.',
-    typographyRuleEn: 'No bottom subtitles. Visual infographics and schematic data projected in Midground Z-1 layer behind presenter shoulders, crisp 17px typography.',
-    outputRulePt: 'Layout Híbrido: Apresentador minimizado ocupando 30%-40% inferior apontando para cima, com canvas principal superior (60%-70%) projetando o infográfico.',
-    outputRuleEn: 'Hybrid layout: Presenter minimized at bottom 30%-40% pointing upward, with main upper canvas (60%-70%) projecting architectural diagram.',
-    ptDesc: 'Projeção espacial na camada traseira (Z-1) atrás do apresentador, com infográficos ou tabelas comparativas.',
-    enDesc: 'Spatial projection in back midground layer (Z-1) behind subject, featuring comparative charts or diagrams.'
+    name: '3. Z-Depth Midground (Atrás Z-1) / Layout Híbrido Split',
+    typographyRulePt: 'Sem legendas na base. Conteúdo gráfico e Texto Traseiro Z-1 ancorados atrás do apresentador (ou no Canvas Superior 60-70% com Mini-Presenter 30-40% na base), fonte calibre 17px.',
+    typographyRuleEn: 'No bottom subtitles. Visual infographics and Z-1 back typography anchored behind presenter (or upper 60-70% canvas with 30-40% mini-presenter below), 17px font.',
+    outputRulePt: 'Camada Z-Depth Midground (Z-1) com infográfico/painel translúcido atrás dos ombros ou Layout Híbrido Split.',
+    outputRuleEn: 'Z-Depth Midground (Z-1) translucent panel behind shoulders or Hybrid Split Layout.',
+    ptDesc: 'Elementos gráficos posicionados atrás do apresentador ou em Layout Híbrido Split.',
+    enDesc: 'Graphic elements positioned behind presenter or in Hybrid Split Layout.'
   },
   lateral_perspectiva: {
     id: 'lateral_perspectiva',
-    name: '4. Caixa Lateral em Perspectiva (35°) + Humano 60% Esquerda',
-    typographyRulePt: 'Sem legendas na base da tela. Renderizar mockup/card em perspectiva isométrica de 35° à direita com textos e ícones calibre 17px de alto contraste.',
-    typographyRuleEn: 'No subtitles on screen bottom. Render 3D card/mockup in 35-degree isometric tilt on the right with crisp 17px high-contrast typography.',
-    outputRulePt: 'Layout 60/40: Apresentador posicionado à esquerda ocupando 60% do quadro e mockup tridimensional inclinado a 35° à direita.',
-    outputRuleEn: '60/40 Split Layout: Presenter on left 60% of frame with 3D card/smartphone mockup tilted at 35 degrees on the right.',
-    ptDesc: 'Layout 60/40: Apresentador à esquerda e mockup 3D/Data Card inclinado a 35° à direita.',
-    enDesc: '60/40 Split Layout: Presenter on the left and 35-degree angled 3D data card on the right.'
+    name: '4. Side Perspective Split (60/40, Inclinado 35°)',
+    typographyRulePt: 'Sem legendas na base. Renderizar tela vertical em perspectiva isométrica de 35° à direita com tipografia calibre 17px em contraste bicolor.',
+    typographyRuleEn: 'No bottom subtitles. Render vertical screen in 35-degree isometric tilt on the right with 17px bicolor contrast typography.',
+    outputRulePt: 'Asymmetric Split 60/40: Apresentador à esquerda e card/carrossel espacial inclinado a 35° à direita.',
+    outputRuleEn: 'Asymmetric 60/40 Split: Presenter on left and 35-degree tilted spatial card/carousel on right.',
+    ptDesc: 'Telas verticais inclinadas flutuando ao lado com apresentador lateralizado.',
+    enDesc: 'Tilted vertical screens floating on the side with presenter on the left.'
   }
 };
 
@@ -390,16 +457,16 @@ export interface LivingSkinFilter {
 export const LIVING_SKIN_FILTERS: LivingSkinFilter[] = [
   {
     key: 'texturas',
-    label: 'Texturas Reais',
-    ptDesc: 'Microgeometria epidérmica humana viva, poros visíveis e textura natural',
+    label: 'Pele Humana Realista',
+    ptDesc: 'Microtextura epidérmica real com poros visíveis',
     enDesc: 'authentic living human epidermal micro-geometry and visible pores',
     activeDefault: true
   },
   {
     key: 'pele_sss',
-    label: 'SSS Orgânico',
-    ptDesc: 'Espalhamento subsuperficial orgânico (SSS) biologicamente plausível',
-    enDesc: 'natural organic subsurface scattering (SSS)',
+    label: 'Textura Orgânica PBR / SSS',
+    ptDesc: 'Tecidos biológicos e espalhamento subsuperficial orgânico (SSS)',
+    enDesc: 'natural organic subsurface scattering (SSS) and PBR biological realism',
     activeDefault: true
   },
   {
@@ -412,22 +479,22 @@ export const LIVING_SKIN_FILTERS: LivingSkinFilter[] = [
   {
     key: 'anti_emborrachado',
     label: 'Anti-Emborrachado',
-    ptDesc: 'Biomecânica anatômica precisa, mandíbula estável sem estiramento emborrachado',
+    ptDesc: 'Biomecânica anatômica precisa, mandíbula estável sem estiramento',
     enDesc: 'anatomically accurate biomechanics, zero rubbery stretching or jaw warp',
     activeDefault: true
   },
   {
     key: 'anti_opaco',
-    label: 'Anti-Opaco / Vitalidade',
-    ptDesc: 'Vitalidade biológica saudável da pele, sem palidez cadavérica ou opacidade artificial',
-    enDesc: 'healthy biological skin vitality, realistic warm vascular undertone',
+    label: 'Alto Contraste & Vitalidade',
+    ptDesc: 'Pretos profundos equilibrados com realces luminosos e vitalidade biológica',
+    enDesc: 'cinematic high contrast with deep blacks and healthy biological skin vitality',
     activeDefault: true
   },
   {
     key: 'poros_suaves',
-    label: 'Poros Suaves (85mm)',
-    ptDesc: 'Poros faciais orgânicos e suaves sem efeito grosseiro ou granulado de ruído',
-    enDesc: 'soft natural skin pores optimized for 85mm portrait optics',
+    label: 'Shallow Bokeh 85mm',
+    ptDesc: 'Poros suaves otimizados para lente 85mm f/1.8 com fundo desfocado',
+    enDesc: 'soft natural skin pores optimized for 85mm f/1.8 shallow bokeh optics',
     activeDefault: true
   }
 ];
@@ -441,12 +508,12 @@ export interface ReferencePill {
 }
 
 export const REFERENCE_PILLS: ReferencePill[] = [
-  { id: 'personagem', token: '[ REFERENCIA PERSONAGEM ]', label: 'Personagem (Face / Corpo)', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: true },
-  { id: 'voz', token: '[ REFERENCIA VOZ ]', label: 'Voz (Áudio Somente)', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: true },
-  { id: 'cena', token: '[ REFERENCIA CENA ]', label: 'Cena de Referência', requiredFor: ['lipsync'], defaultActive: true },
-  { id: 'elemento1', token: '[ REFERENCIA ELEMENTO 1 ]', label: 'Card / Mockup Z-Depth', requiredFor: ['voiceover', 'video_to_video'], defaultActive: true },
-  { id: 'video_base', token: '[ REFERENCIA VIDEO BASE ]', label: 'Vídeo Base (Movimento)', requiredFor: ['video_to_video'], defaultActive: true },
-  { id: 'video_anterior', token: '[ REFERENCIA VIDEO ANTERIOR ]', label: 'Vídeo Anterior (Frame-Lock)', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: false }
+  { id: 'personagem', token: '[ REFERENCIA PERSONAGEM ]', label: 'Slot 01: Identidade Facial/Corporal', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: true },
+  { id: 'elemento1', token: '[ REFERENCIA ELEMENTO 1 ]', label: 'Slot 02–04: Produtos / Gráficos', requiredFor: ['voiceover', 'video_to_video'], defaultActive: true },
+  { id: 'cena', token: '[ REFERENCIA CENA ]', label: 'Slot 05: Cenário de Fundo Fixo', requiredFor: ['lipsync'], defaultActive: true },
+  { id: 'voz', token: '[ REFERENCIA VOZ ]', label: 'Slot 06: Guia Isolada de Áudio', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: true },
+  { id: 'video_base', token: '[ REFERENCIA VIDEO BASE ]', label: 'Vídeo Base (Video-to-Video)', requiredFor: ['video_to_video'], defaultActive: true },
+  { id: 'video_anterior', token: '[ REFERENCIA VIDEO ANTERIOR ]', label: 'Video Extend (Frame-Lock)', requiredFor: ['voiceover', 'lipsync', 'video_to_video'], defaultActive: false }
 ];
 
 export const EMOTIONAL_TONES = [
@@ -463,68 +530,198 @@ export const EMOTIONAL_TONES = [
 export interface PreferenceChip {
   id: string;
   label: string;
-  tooltip5Words: string; // Exatamente 5 palavras em PT-BR
+  tooltip5Words: string; // Exatamente 5 palavras em PT-BR (calibre 17px por 5s)
 }
 
 export interface PreferenceCategory {
   id: string;
-  title: string; // Em inglês profissional
+  title: string;
   chips: PreferenceChip[];
 }
 
+/**
+ * MATRIZ INTEGRAL DE ACORDEÕES DO RIGHT PANEL (100% DOS 15 GRUPOS)
+ * Cada chip possui exatamente 5 palavras em PT-BR para o popup de 5 segundos.
+ */
 export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   {
-    id: 'camera_lens',
-    title: 'CAMERA & LENS',
+    id: 'video_model_modes',
+    title: '1. VIDEO MODEL & MASTER MODES',
     chips: [
-      { id: 'slow_push_in', label: 'Slow Push-In', tooltip5Words: 'Aproximação suave gerando tensão foco.' },
-      { id: 'slow_pull_out', label: 'Slow Pull-Out', tooltip5Words: 'Afastamento suave revelando ambiente amplo.' },
-      { id: 'parallax_dolly', label: 'Parallax Dolly', tooltip5Words: 'Movimento lateral criando profundidade espacial.' },
-      { id: 'orbita_3d', label: 'Órbita 3D', tooltip5Words: 'Giro dinâmico destacando o apresentador.' },
-      { id: 'bokeh_85mm', label: '85mm Shallow Bokeh', tooltip5Words: 'Foco nítido com fundo desfocado.' },
-      { id: 'natural_50mm', label: '50mm Visão Natural', tooltip5Words: 'Perspectiva humana realista e equilibrada.' },
-      { id: 'wide_35mm', label: '35mm Grande Angular', tooltip5Words: 'Plano aberto contextualizando todo cenário.' },
-      { id: 'plano_medio', label: 'Plano Médio 45%', tooltip5Words: 'Enquadramento profissional da cintura acima.' },
-      { id: 'close_up', label: 'Close-up Focado', tooltip5Words: 'Expressão facial com máxima intensidade.' }
+      { id: 'mod_humano_elem', label: 'Humano com Elementos', tooltip5Words: 'Apresentador real integrado com gráficos.' },
+      { id: 'mod_fisiologia_3d', label: 'Fisiologia 3D Ultra-realista', tooltip5Words: 'Simulação biomédica interna ultra realista.' },
+      { id: 'mod_personagem_3d', label: 'Personagem Estilizado 3D', tooltip5Words: 'Animação expressiva ilustrando hábitos cotidianos.' },
+      { id: 'op_text_to_video', label: 'Text-to-Video', tooltip5Words: 'Geração autônoma total por texto.' },
+      { id: 'op_image_to_video', label: 'Image-to-Video', tooltip5Words: 'Ancoragem visual mantendo imagem base.' },
+      { id: 'op_video_to_video', label: 'Video-to-Video', tooltip5Words: 'Reestilização adicionando camadas espaciais profundas.' },
+      { id: 'op_video_extend', label: 'Video Extend (Frame-Lock)', tooltip5Words: 'Continuação fluida travando último frame.' },
+      { id: 'op_slot_01', label: 'Ref Slot 01 (Identidade)', tooltip5Words: 'Trava identidade facial e corporal.' },
+      { id: 'op_slot_02_04', label: 'Ref Slot 02–04 (Produtos)', tooltip5Words: 'Injeção de produtos e gráficos.' },
+      { id: 'op_slot_05', label: 'Ref Slot 05 (Cenário)', tooltip5Words: 'Aplicação de cenário fixo traseiro.' },
+      { id: 'op_slot_06', label: 'Ref Slot 06 (Áudio)', tooltip5Words: 'Guia isolada sincronizando o áudio.' }
     ]
   },
   {
-    id: 'lighting_mood',
-    title: 'LIGHTING & MOOD',
+    id: 'special_transitions',
+    title: '2. SPECIAL TRANSITIONS',
     chips: [
-      { id: 'chiaroscuro', label: 'Chiaroscuro', tooltip5Words: 'Sombras dramáticas destacando o rosto.' },
-      { id: 'warm_amber', label: 'Warm Amber', tooltip5Words: 'Tonalidade dourada acolhedora e confiante.' },
-      { id: 'clinical_silver', label: 'Clinical Silver', tooltip5Words: 'Luz fria transmitindo precisão médica.' },
-      { id: 'biotec_cyan', label: 'Biotec Cyan', tooltip5Words: 'Iluminação futurista com tecnologia avançada.' },
-      { id: 'neon_bicolor', label: 'Néon Bicolor', tooltip5Words: 'Contraste moderno de duas cores.' },
-      { id: 'dimming', label: 'Dimming Narrativo', tooltip5Words: 'Escurecimento sutil aumentando o suspense.' },
-      { id: 'light_spill', label: 'Light Spill', tooltip5Words: 'Flashes sutis recortando os ombros.' }
+      { id: 'tr_whip_pan', label: 'Whip-Pan Motion Blur', tooltip5Words: 'Chicote veloz conectando dois ambientes.' },
+      { id: 'tr_zaxis_pass', label: 'Z-Axis Pass-Through', tooltip5Words: 'Câmera atravessa card revelando cena.' },
+      { id: 'tr_match_cut', label: 'Match-Cut Espacial', tooltip5Words: 'Troca fundo mantendo mesma postura.' },
+      { id: 'tr_glass_wipe', label: 'Glass Shutter Wipe', tooltip5Words: 'Painel fosco desliza limpando quadro.' },
+      { id: 'tr_light_flash', label: 'Light Flash Sub-Bass', tooltip5Words: 'Pulso luminoso com impacto grave.' }
     ]
   },
   {
-    id: 'zdepth_motion',
-    title: 'Z-DEPTH & MOTION',
+    id: 'camera_distance_framing',
+    title: '3. DISTANCE, FRAMING & ANGLES',
     chips: [
-      { id: 'bento_grid', label: 'Bento Grid', tooltip5Words: 'Cards flutuantes organizando tópicos visuais.' },
-      { id: 'top_hud', label: 'Top HUD (+25%)', tooltip5Words: 'Painel superior com leitura imediata.' },
-      { id: 'midground_z1', label: 'Midground Z-1', tooltip5Words: 'Caixa gigante atrás do apresentador.' },
-      { id: 'side_split', label: 'Side Split 35°', tooltip5Words: 'Divisão lateral preservando enquadramento humano.' },
-      { id: 'dataviz', label: 'Data-Viz Orgânico', tooltip5Words: 'Gráficos fluidos ilustrando métricas essenciais.' },
-      { id: 'vidro_fosco', label: 'Vidro Fosco Glass', tooltip5Words: 'Blur sofisticado com borda champanhe.' },
-      { id: 'puro', label: 'Apresentador Puro', tooltip5Words: 'Sem caixas preservando foco total.' }
+      { id: 'dist_macro_20cm', label: 'Distância Macro (20 cm)', tooltip5Words: 'Foco extremo desfocando fundo cinquenta.' },
+      { id: 'dist_curta_1m', label: 'Distância Curta (1m)', tooltip5Words: 'Enquadramento fechado com alta presença.' },
+      { id: 'dist_media_3m', label: 'Distância Média (3m)', tooltip5Words: 'Equilíbrio padrão entre corpo infográficos.' },
+      { id: 'dist_inter_5m', label: 'Distância Intermediária (5m)', tooltip5Words: 'Visão ampla integrando bancada espaço.' },
+      { id: 'dist_longa_10m', label: 'Distância Longa (10m)', tooltip5Words: 'Plano geral mostrando corpo inteiro.' },
+      { id: 'fr_closeup', label: 'Close-Up Facial', tooltip5Words: 'Tórax acima com foco facial.' },
+      { id: 'fr_medium_45', label: 'Medium Shot (Headroom 45%)', tooltip5Words: 'Espaço superior livre para painéis.' },
+      { id: 'fr_split_60_40', label: 'Asymmetric Split 60/40', tooltip5Words: 'Apresentador lateral liberando espaço direito.' },
+      { id: 'fr_mini_lower', label: 'Mini-Presenter Lower-Third', tooltip5Words: 'Apresentador reduzido sob grande painel.' },
+      { id: 'fr_americano', label: 'Plano Americano', tooltip5Words: 'Cintura acima integrando bancada física.' },
+      { id: 'fr_ots_esq', label: 'OTS Esquerdo (10% Blur)', tooltip5Words: 'Câmera traseira desfocando ombro esquerdo.' },
+      { id: 'ang_frontal', label: 'Frontal Nível Olhos', tooltip5Words: 'Alinhamento direto gerando máxima autoridade.' },
+      { id: 'ang_perfil_45_90', label: 'Perfil Dinâmico 45°/90°', tooltip5Words: 'Ângulo diagonal evidenciando volume espacial.' },
+      { id: 'ang_plongee_contra', label: 'Plongée / Contra-Plongée', tooltip5Words: 'Ângulos verticais alterando perspectiva imponência.' },
+      { id: 'bokeh_f18', label: 'Shallow Bokeh f/1.8', tooltip5Words: 'Fundo desfocado mantendo frente nítida.' }
     ]
   },
   {
-    id: 'biomechanics',
-    title: 'BIOMECHANICS',
+    id: 'camera_movements',
+    title: '4. CAMERA MOVEMENTS',
     chips: [
-      { id: 'bio_seguranca', label: 'Segurança Firme', tooltip5Words: 'Olhar direto transmitindo autoridade total.' },
-      { id: 'bio_empatia', label: 'Empatia Acolhedora', tooltip5Words: 'Inclinação suave demonstrando escuta ativa.' },
-      { id: 'bio_simpatia', label: 'Simpatia Sem Dentes', tooltip5Words: 'Sorriso nos olhos sem dentes.' },
-      { id: 'bio_preocupado', label: 'Preocupado Clínico', tooltip5Words: 'Cenho analítico focado no diagnóstico.' },
-      { id: 'bio_reflexivo', label: 'Reflexivo Profundo', tooltip5Words: 'Cadência pausada sugerindo raciocínio denso.' },
-      { id: 'bio_hilario', label: 'Hilário Elegante', tooltip5Words: 'Leveza contida sem exageros faciais.' }
+      { id: 'mov_orbital_tilt', label: '3D Orbital Arc + Tilt', tooltip5Words: 'Rotação diagonal revelando o horizonte.' },
+      { id: 'mov_slow_pushin', label: 'Slow Push-In (Zoom In)', tooltip5Words: 'Aproximação contínua aumentando retenção visual.' },
+      { id: 'mov_slow_pullout', label: 'Slow Pull-Out (Zoom Out)', tooltip5Words: 'Afastamento gradual revelando múltiplos elementos.' },
+      { id: 'mov_snap_zoomout', label: 'Snap Zoom-Out (1,5s)', tooltip5Words: 'Recuo rápido quebrando ritmo visual.' },
+      { id: 'mov_isometric_pan', label: 'Isometric Parallax Pan', tooltip5Words: 'Deslize lateral destacando volume gráfico.' },
+      { id: 'mov_pedestal', label: 'Pedestal Float', tooltip5Words: 'Elevação vertical subindo aos gráficos.' },
+      { id: 'mov_dolly_slider', label: 'Parallax Dolly Slider', tooltip5Words: 'Deslocamento horizontal revelando profundidade tridimensional.' },
+      { id: 'mov_locked_anchor', label: 'Locked-Off Anchor', tooltip5Words: 'Câmera travada focando nos motions.' }
+    ]
+  },
+  {
+    id: 'scenarios_solar',
+    title: '5. SCENARIOS & SOLAR LIGHTING',
+    chips: [
+      { id: 'sol_06h', label: 'Campo Aberto (Sol 06:00)', tooltip5Words: 'Luz solar dourada matinal direta.' },
+      { id: 'sol_10h', label: 'Campo Aberto (Sol 10:00)', tooltip5Words: 'Iluminação natural limpa sombras médias.' },
+      { id: 'sol_12h', label: 'Campo Aberto (Sol 12:00)', tooltip5Words: 'Luz zenital vertical alto contraste.' },
+      { id: 'sol_17h', label: 'Campo Aberto (Sol 17:00)', tooltip5Words: 'Luz alaranjada entardecer sombras longas.' },
+      { id: 'sol_filtrado', label: 'Campo Aberto Filtrado', tooltip5Words: 'Luz difusa vegetação áudio suave.' },
+      { id: 'cen_studio', label: 'Studio Profissional', tooltip5Words: 'Fundo infinito iluminado sem eco.' },
+      { id: 'cen_home_office', label: 'Home Office', tooltip5Words: 'Ambiente corporativo acolhedor luz suave.' },
+      { id: 'cen_praia', label: 'Calçadão de Praia', tooltip5Words: 'Iluminação litorânea vibrante áudio suave.' },
+      { id: 'cen_elevador', label: 'Elevador Metálico', tooltip5Words: 'Superfícies reflexivas para cortes rápidos.' },
+      { id: 'cen_hb20s', label: 'Interior Hyundai HB20S', tooltip5Words: 'Habitáculo automotivo fechado luz natural.' }
+    ]
+  },
+  {
+    id: 'microphones_props',
+    title: '6. MICROPHONES & SCENE PROPS',
+    chips: [
+      { id: 'mic_braco_baixo', label: 'Braço Articulado Baixo', tooltip5Words: 'Microfone broadcast fixado na bancada.' },
+      { id: 'mic_moeda_mao', label: 'Microfone Moeda (Mão)', tooltip5Words: 'Cápsula magnética segura ao queixo.' },
+      { id: 'mic_deadcat_mao', label: 'Lapela Deadcat (Mão)', tooltip5Words: 'Microfone com pelúcia segurado manualmente.' },
+      { id: 'mic_lapela_gola', label: 'Lapela na Gola', tooltip5Words: 'Microfone discreto liberando as mãos.' },
+      { id: 'mic_clean_frame', label: 'Clean Frame (Sem Mic)', tooltip5Words: 'Sem microfones mantendo imagem limpa.' },
+      { id: 'prop_contexto', label: 'Objetos de Contexto', tooltip5Words: 'Elementos físicos reforçando tema central.' }
+    ]
+  },
+  {
+    id: 'spatial_architecture',
+    title: '7. SPATIAL ARCHITECTURE (9:16)',
+    chips: [
+      { id: 'arq_top_hud', label: 'Top-Floating HUD', tooltip5Words: 'Gráficos suspensos acima linha visual.' },
+      { id: 'arq_midground_z1', label: 'Z-Depth Midground (Z-1)', tooltip5Words: 'Elementos gráficos atrás do apresentador.' },
+      { id: 'arq_fore_layer', label: 'Fore-Layer Interactive', tooltip5Words: 'Gráficos interativos frente do corpo.' },
+      { id: 'arq_hibrido_split', label: 'Layout Híbrido Split', tooltip5Words: 'Canvas amplo superior apresentador reduzido.' },
+      { id: 'arq_side_split', label: 'Side Perspective Split', tooltip5Words: 'Telas verticais inclinadas ao lado.' },
+      { id: 'arq_bento_sup', label: 'Bento Grid Superior', tooltip5Words: 'Grade organizando dados técnicos visuais.' },
+      { id: 'arq_popout_3d', label: 'Efeito Pop-Out 3D', tooltip5Words: 'Elemento salta fora da moldura.' }
+    ]
+  },
+  {
+    id: 'animations_motion',
+    title: '8. ANIMATIONS & MOTION DESIGN',
+    chips: [
+      { id: 'ani_mini_cards', label: 'Mini Cards de Topo', tooltip5Words: 'Caixas compactas contendo dados rápidos.' },
+      { id: 'ani_dataviz', label: 'Gráficos Data-Viz Dinâmicos', tooltip5Words: 'Curvas barras animadas com dados.' },
+      { id: 'ani_passo_caixas', label: 'Passo a Passo Caixas', tooltip5Words: 'Blocos sequenciais numerados organizando etapas.' },
+      { id: 'ani_barras_exp', label: 'Barras Horizontais Expansivas', tooltip5Words: 'Barras lineares crescendo na fala.' },
+      { id: 'ani_icones_gif', label: 'Ícones Animados (GIF-Style)', tooltip5Words: 'Microelementos vetoriais pulsando em loop.' },
+      { id: 'ani_film_strip', label: 'Film Strip 9:16 (Rolo)', tooltip5Words: 'Sequência vertical deslizando continuamente tela.' },
+      { id: 'ani_carrossel_916', label: 'Carrossel Espacial 9:16', tooltip5Words: 'Três telas translúcidas em perspectiva.' },
+      { id: 'ani_laser_border', label: 'Laser Border Trace', tooltip5Words: 'Fio luminoso desenhando bordas card.' },
+      { id: 'ani_spring_pop', label: 'Spring Pop-In', tooltip5Words: 'Entrada dinâmica com física mola.' },
+      { id: 'ani_staggered', label: 'Staggered Cascade', tooltip5Words: 'Entrada sequencial compassada dos itens.' },
+      { id: 'ani_exploded_3d', label: '3D Exploded Layering', tooltip5Words: 'Decomposição tridimensional em planos paralelos.' }
+    ]
+  },
+  {
+    id: 'textures_borders',
+    title: '9. TEXTURES, BORDERS & FINISHES',
+    chips: [
+      { id: 'tex_glass_14110f', label: 'Glassmorphism Fosco (#14110F)', tooltip5Words: 'Vidro escuro com desfoque traseiro.' },
+      { id: 'tex_deep_space', label: 'Deep Space Glass', tooltip5Words: 'Vidro azulado com aspecto tecnológico.' },
+      { id: 'tex_capsula_1e1916', label: 'Cápsula Interna (#1E1916)', tooltip5Words: 'Sub-card com gradiente quente inferior.' },
+      { id: 'tex_pbr_organica', label: 'Textura Orgânica PBR', tooltip5Words: 'Tecidos biológicos úmidos ultra realistas.' },
+      { id: 'tex_pele_real', label: 'Pele Humana Realista', tooltip5Words: 'Microtextura epidérmica com poros visíveis.' },
+      { id: 'brd_hairline_1px', label: '1px Hairline Border', tooltip5Words: 'Linha ultrafina com contorno reflexivo.' },
+      { id: 'brd_ouro_champ', label: 'Filete Dourado Champagne', tooltip5Words: 'Borda metálica fina brilho dourado.' },
+      { id: 'brd_prata_titanio', label: 'Filete Prateado Titânio', tooltip5Words: 'Traço metálico frio alta precisão.' },
+      { id: 'brd_ambar_cobre', label: 'Filete Âmbar Acobreado', tooltip5Words: 'Contorno translúcido para paletas quentes.' },
+      { id: 'brd_cantos_10_20', label: 'Cantos Arredondados (10–20px)', tooltip5Words: 'Curvatura suave nos painéis gráficos.' },
+      { id: 'brd_drop_shadow', label: 'Soft Ambient Drop Shadow', tooltip5Words: 'Sombra difusa descolando do fundo.' }
+    ]
+  },
+  {
+    id: 'lighting_typography',
+    title: '10. LIGHTING & TYPOGRAPHY (17PX)',
+    chips: [
+      { id: 'luz_chiaroscuro', label: 'Chiaroscuro Studio', tooltip5Words: 'Foco facial com laterais escurecidas.' },
+      { id: 'luz_warm_golden', label: 'Luz Quente (Âmbar/Golden)', tooltip5Words: 'Tonalidade dourada transmitindo conforto proximidade.' },
+      { id: 'luz_daylight_fria', label: 'Luz Fria (Daylight Clínica)', tooltip5Words: 'Iluminação clara transmitindo precisão médica.' },
+      { id: 'luz_ciano_biotec', label: 'Luz Ciano Biotec', tooltip5Words: 'Atmosfera fria para linguagem científica.' },
+      { id: 'luz_neon_bicolor', label: 'Néon Bicolor', tooltip5Words: 'Recortes luminosos magenta e azul.' },
+      { id: 'luz_rim_light', label: 'Rim Light de Recorte', tooltip5Words: 'Feixe traseiro destacando os ombros.' },
+      { id: 'luz_light_spill', label: 'Light Spill Diegético', tooltip5Words: 'Reflexo luminoso real no corpo.' },
+      { id: 'luz_alto_contraste', label: 'Alto Contraste Cinematográfico', tooltip5Words: 'Pretos profundos com realces luminosos.' },
+      { id: 'typ_17px', label: 'Calibre Técnico 17px', tooltip5Words: 'Tamanho ideal para leitura móvel.' },
+      { id: 'typ_sans_inter', label: 'Sans-Serif Fina (Inter/SF)', tooltip5Words: 'Tipografia limpa sem serifa moderna.' },
+      { id: 'typ_caixa_alta', label: 'Títulos em Caixa Alta', tooltip5Words: 'Categorias destacadas com letras espaçadas.' },
+      { id: 'typ_caixa_baixa', label: 'Rótulos em Caixa Baixa', tooltip5Words: 'Textos secundários em estilo minimalista.' },
+      { id: 'typ_bicolor', label: 'Contraste Bicolor', tooltip5Words: 'Destaque alternando branco cor temática.' },
+      { id: 'typ_traseiro_z1', label: 'Texto Traseiro Z-1', tooltip5Words: 'Palavras gigantes atrás da cabeça.' },
+      { id: 'typ_lettering_3d', label: 'Motion Lettering Frontal', tooltip5Words: 'Tipografia tridimensional no primeiro plano.' },
+      { id: 'typ_zero_texto', label: 'Modo Zero-Texto', tooltip5Words: 'Supressão textual focando visual puro.' }
+    ]
+  },
+  {
+    id: 'voice_acoustics_biomech',
+    title: '11. VOICE, ACOUSTICS & BIOMECHANICS',
+    chips: [
+      { id: 'voz_trava_zero', label: 'Trava Labial Frame-Zero', tooltip5Words: 'Lábios selados desde frame zero.' },
+      { id: 'voz_exp_mapeadas', label: 'Expressões Mapeadas', tooltip5Words: 'Microexpressões alinhadas ao tom narrativo.' },
+      { id: 'voz_acoes_sutis', label: 'Ações Físicas Sutis', tooltip5Words: 'Movimentos naturais sem exageros corporais.' },
+      { id: 'voz_dry_broadcast', label: 'Acústica Dry Broadcast', tooltip5Words: 'Áudio tratado sem reverberação eco.' },
+      { id: 'voz_ptbr_culta', label: 'Pronúncia PT-BR Culta', tooltip5Words: 'Dicção neutra sem sotaque regional.' },
+      { id: 'voz_ritmo_10s', label: 'Calculadora Ritmo (10s)', tooltip5Words: 'Cadência ideal para dez segundos.' },
+      { id: 'voz_foley_ui', label: 'Foley de Interface', tooltip5Words: 'Sons sutis acompanhando animações gráficas.' },
+      { id: 'voz_ducking_20db', label: 'Audio Ducking (-20dB)', tooltip5Words: 'Sons reduzidos destacando voz principal.' },
+      { id: 'bio_seguranca', label: 'Perfil 1: Segurança', tooltip5Words: 'Olhar direto transmitindo autoridade total.' },
+      { id: 'bio_empatia', label: 'Perfil 2: Empatia', tooltip5Words: 'Inclinação suave demonstrando escuta ativa.' },
+      { id: 'bio_simpatia', label: 'Perfil 3: Simpatia (S/ Dentes)', tooltip5Words: 'Sorriso nos olhos sem dentes.' },
+      { id: 'bio_hilario', label: 'Perfil 4: Hilário Elegante', tooltip5Words: 'Leveza contida sem exageros faciais.' },
+      { id: 'bio_preocupado', label: 'Perfil 5: Preocupado Clínico', tooltip5Words: 'Cenho analítico focado no diagnóstico.' },
+      { id: 'bio_reflexivo', label: 'Perfil 6: Reflexivo', tooltip5Words: 'Cadência pausada sugerindo raciocínio denso.' }
     ]
   }
 ];
-
