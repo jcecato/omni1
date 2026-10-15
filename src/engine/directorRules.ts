@@ -244,12 +244,56 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
 
     const wordAnalysis = analyzeSpeechCadence(speech);
 
-    // Frame-Lock para blocos 2 em diante
+    // Frame-Lock para cenas 2 em diante
     let continuidadePt = '';
     let continuidadeEn = '';
     if (blockNum > 1) {
-      continuidadePt = `[CONTINUIDADE DE CENA - BLOCO #${blockNum} DE ${numBlocks} | FRAME-LOCK]: Continue exatamente a partir do último frame de [ REFERENCIA VIDEO ANTERIOR ]. Mantenha enquadramento final, iluminação, roupa e geometria 100% travados, zero jump-cut.`;
-      continuidadeEn = `[SCENE CONTINUITY - BLOCK #${blockNum} OF ${numBlocks} | FRAME-LOCK]: Continue seamlessly from final frame of [ REFERENCIA VIDEO ANTERIOR ]. Maintain 100% locked framing, lighting, wardrobe and geometry, zero jump-cut.`;
+      continuidadePt = `[CONTINUIDADE DE CENA - CENA #${blockNum} DE ${numBlocks} | FRAME-LOCK]: Continue do último frame de [ REFERENCIA VIDEO ANTERIOR ]. Enquadramento, iluminação e geometria 100% travados, zero jump-cut.`;
+      continuidadeEn = `[SCENE CONTINUITY - SCENE #${blockNum} OF ${numBlocks} | FRAME-LOCK]: Seamlessly continue from final frame of [ REFERENCIA VIDEO ANTERIOR ]. Maintain 100% locked framing, lighting and geometry, zero jump-cut.`;
+    }
+
+    // Cronologia Visual Progressiva entre as cenas (Cena 1 a Cena 6)
+    let ato1Pt = 'Ato 1 (0-5s): Foco inicial no olhar firme e gancho de autoridade imediato, lábios selados.';
+    let ato2Pt = 'Ato 2 (5-10s): Articulação labial contida, estabilidade de mandíbula e clareza narrativa.';
+    let ato1En = 'Act 1 (0-5s): Initial eye-contact hook and unwavering authority, sealed lips.';
+    let ato2En = 'Act 2 (5-10s): Restrained sober lip movement, jaw stability and narrative clarity.';
+
+    if (numBlocks > 1) {
+      const startSec = (blockNum - 1) * 10;
+      const midSec = startSec + 5;
+      const endSec = blockNum * 10;
+
+      if (blockNum === 1) {
+        ato1Pt = `Ato 1 (0-5s): Enquadramento frontal direto, olhar firme estabelecendo gancho de autoridade imediato.`;
+        ato2Pt = `Ato 2 (5-10s): Articulação labial sóbria, microexpressões assertivas sem mover mandíbula.`;
+        ato1En = `Act 1 (0-5s): Direct eye-level frontal framing, locked gaze establishing instant credibility.`;
+        ato2En = `Act 2 (5-10s): Controlled sober lip articulation, micro-assertive gaze without jaw displacement.`;
+      } else if (blockNum === 2) {
+        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Transição contínua em Slow Push-In sutil conectada ao frame anterior.`;
+        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Ancoragem de autoridade com micro-aceno assertivo, lábios selados.`;
+        ato1En = `Act 1 (${startSec}-${midSec}s): Seamless Slow Push-In transition perfectly locked from previous frame.`;
+        ato2En = `Act 2 (${midSec}-${endSec}s): Anchored authoritative presence with subtle nod, sealed lips.`;
+      } else if (blockNum === 3) {
+        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Variação angular em perspectiva dinâmica, aprofundando o mecanismo visual.`;
+        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Postura firme e gestos contidos de convicção técnica.`;
+        ato1En = `Act 1 (${startSec}-${midSec}s): Dynamic angular perspective shift deepening visual mechanism.`;
+        ato2En = `Act 2 (${midSec}-${endSec}s): Steady posture and restrained gestures conveying technical conviction.`;
+      } else if (blockNum === 4) {
+        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Dimming narrativo sutil destacando a gravidade do ponto central.`;
+        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Retorno da iluminação principal com resolução assertiva.`;
+        ato1En = `Act 1 (${startSec}-${midSec}s): Subtle narrative dimming accentuating central core message.`;
+        ato2En = `Act 2 (${midSec}-${endSec}s): Key light restoration delivering clear assertive resolution.`;
+      } else if (blockNum === 5) {
+        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Deslocamento Parallax destacando volumetria e dados essenciais.`;
+        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Preparação para fechamento com alta retenção do espectador.`;
+        ato1En = `Act 1 (${startSec}-${midSec}s): Parallax spatial glide accentuating visual volume and key data.`;
+        ato2En = `Act 2 (${midSec}-${endSec}s): Pre-closing transition maintaining maximum viewer retention.`;
+      } else {
+        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Plano consolidado de autoridade máxima, estabilização perfeita.`;
+        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Desfecho contundente com olhar fixo, finalização sem jump-cut.`;
+        ato1En = `Act 1 (${startSec}-${midSec}s): Consolidated master framing of peak authority, rock-solid posture.`;
+        ato2En = `Act 2 (${midSec}-${endSec}s): Powerful closing delivery with unwavering eye contact, zero jump-cut.`;
+      }
     }
 
     const varsPt: Record<string, string> = {
@@ -257,8 +301,8 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       FORMATO: '9:16 (Vertical)',
       NUM_CENAS: '2 atos dinâmicos',
       REGRA_TIPOGRAFIA_DINAMICA: zDepth.typographyRulePt,
-      DESCRICAO_CURTA_CENA_1: `${descVisualPt} (Ato 1: 0-5s, foco inicial no olhar).`,
-      DESCRICAO_CURTA_CENA_2: `${descVisualPt} (Ato 2: 5-10s, aproximação sutil).`,
+      DESCRICAO_CURTA_CENA_1: ato1Pt,
+      DESCRICAO_CURTA_CENA_2: ato2Pt,
       TOM_NARRACAO: tone.pt,
       TEXTO_DA_FALA: speech,
       SOM_CENA_1: somPt1,
@@ -269,7 +313,7 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       ELEMENTO_MOTION_ZDEPTH: zDepth.ptDesc,
       PERFIL_CORPORAL_SELECIONADO: bodyProfile.ptDesc,
       SAIDA_FINAL_DINAMICA: zDepth.outputRulePt,
-      MODO_BOCA_V2V: 'Sincronia labial fluida preservando biomecânica, dentes superiores encobertos.',
+      MODO_BOCA_V2V: 'Sincronia labial sutil, dentes invisíveis, mandíbula estável.',
       AMBIENTE_E_LUZ_V2V: `${scenario.ptDesc}; ${lighting.ptDesc}`,
       CAMERA_E_TRANSICAO_V2V: `${cameraMove.ptDesc}; ${cameraAngle.ptDesc}`,
       CONSTRUCAO_CAIXA_MOTION_V2V: zDepth.ptDesc
@@ -280,8 +324,8 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       FORMATO: '9:16 (Vertical Portrait)',
       NUM_CENAS: '2 dynamic acts',
       REGRA_TIPOGRAFIA_DINAMICA: zDepth.typographyRuleEn,
-      DESCRICAO_CURTA_CENA_1: `${descVisualEn} (Act 1: 0-5s, locked attention).`,
-      DESCRICAO_CURTA_CENA_2: `${descVisualEn} (Act 2: 5-10s, subtle push-in).`,
+      DESCRICAO_CURTA_CENA_1: ato1En,
+      DESCRICAO_CURTA_CENA_2: ato2En,
       TOM_NARRACAO: tone.en,
       TEXTO_DA_FALA: speech, // Fala sempre em PT-BR
       SOM_CENA_1: somEn1,
@@ -292,7 +336,7 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       ELEMENTO_MOTION_ZDEPTH: zDepth.enDesc,
       PERFIL_CORPORAL_SELECIONADO: bodyProfile.enDesc,
       SAIDA_FINAL_DINAMICA: zDepth.outputRuleEn,
-      MODO_BOCA_V2V: 'Fluid natural lip-sync strictly preserving video motion base, teeth hidden behind lips.',
+      MODO_BOCA_V2V: 'Subtle lip-sync, invisible teeth, stable jaw motion.',
       AMBIENTE_E_LUZ_V2V: `${scenario.enDesc}; ${lighting.enDesc}`,
       CAMERA_E_TRANSICAO_V2V: `${cameraMove.enDesc}; ${cameraAngle.enDesc}`,
       CONSTRUCAO_CAIXA_MOTION_V2V: zDepth.enDesc

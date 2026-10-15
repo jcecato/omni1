@@ -2,8 +2,8 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * Painel Esquerdo — Configuração do Molde, Seletor Dinâmico de Blocos (1-6) e Roteiros
- * Super-Skill Omni Video Director Pro
+ * Painel Esquerdo — Configuração do Molde, Seletor Dinâmico de Cenas (1-6) e Roteiros
+ * Super-Skill Omni Video Director Pro v4.0
  */
 
 import React from 'react';
@@ -55,7 +55,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
     });
   };
 
-  // Análise rápida de palavras para o medidor de cada bloco
+  // Análise de palavras para o medidor de cada cena (limite: 16 a 20 palavras @ 1.2x)
   const getWordAnalysis = (text: string): WordCountAnalysis => {
     const clean = (text || '').trim();
     if (!clean) {
@@ -165,64 +165,71 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
         </div>
       </div>
 
-      {/* 2. SELETOR DE QUANTIDADE DE BLOCOS (Grade Horizontal de 1 a 6) */}
+      {/* 2. SELETOR DE QUANTIDADE DE CENAS/BLOCOS: Botões 1 Cena (10s) até 6 Cenas (60s) */}
       <div className="bg-[#0b0d13] border border-[#242b3d] rounded-2xl p-3.5 flex flex-col gap-2.5">
         <div className="flex items-center justify-between">
           <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
             <Layers className="w-4 h-4 text-cyan-400" />
-            Número de Blocos (10s cada)
+            Quantidade de Cenas / Blocos (10s cada)
           </label>
-          <span className="text-xs font-mono font-bold text-cyan-400">
-            Duração: {currentBlockCount * 10}s
+          <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/25">
+            Total: {currentBlockCount * 10}s
           </span>
         </div>
 
-        <div className="grid grid-cols-6 gap-2">
-          {[1, 2, 3, 4, 5, 6].map((num) => {
-            const isSelected = currentBlockCount === num;
+        {/* Grade de 6 botões explícitos com texto completo */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {[
+            { count: 1, label: '1 Cena (10s)' },
+            { count: 2, label: '2 Cenas (20s)' },
+            { count: 3, label: '3 Cenas (30s)' },
+            { count: 4, label: '4 Cenas (40s)' },
+            { count: 5, label: '5 Cenas (50s)' },
+            { count: 6, label: '6 Cenas (60s)' }
+          ].map((item) => {
+            const isSelected = currentBlockCount === item.count;
             return (
               <button
-                key={num}
+                key={item.count}
                 type="button"
-                onClick={() => handleSelectBlockCount(num)}
-                className={`py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex flex-col items-center justify-center cursor-pointer border ${
+                onClick={() => handleSelectBlockCount(item.count)}
+                className={`py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center cursor-pointer border ${
                   isSelected
-                    ? 'bg-cyan-500 text-black border-cyan-400 shadow-md shadow-cyan-500/25 scale-[1.03]'
-                    : 'bg-[#131722] text-slate-400 border-[#242b3d] hover:text-white hover:border-slate-600'
+                    ? 'bg-cyan-500 text-black border-cyan-400 shadow-md shadow-cyan-500/25 font-black scale-[1.02]'
+                    : 'bg-[#131722] text-slate-300 border-[#242b3d] hover:text-white hover:border-slate-500'
                 }`}
               >
-                <span>{num}</span>
-                <span className="text-[10px] font-normal opacity-80">{num * 10}s</span>
+                <span>{item.label}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* 3. ENTRADA DE ROTEIRO DINÂMICA: Exibe exatamente o número de blocos selecionados */}
+      {/* 3. ENTRADA DE ROTEIRO DINÂMICA: Renderiza dinamicamente as caixas de fala correspondentes */}
       <div className="flex flex-col gap-3">
         {Array.from({ length: currentBlockCount }).map((_, index) => {
-          const blockNum = index + 1;
+          const sceneNum = index + 1;
           const text = blockScripts[index] || '';
           const analysis = getWordAnalysis(text);
           const isFirst = index === 0;
 
           return (
             <div 
-              key={blockNum} 
+              key={sceneNum} 
               className="bg-[#0b0d13] border border-[#242b3d] rounded-2xl p-3.5 flex flex-col gap-2 transition-all animate-fadeIn"
             >
               <div className="flex items-center justify-between">
                 <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${isFirst ? 'bg-emerald-400' : 'bg-cyan-400'}`} />
-                  Roteiro Bloco {blockNum} ({index * 10}-{(index + 1) * 10}s)
+                  <span className={`w-2.5 h-2.5 rounded-full ${isFirst ? 'bg-emerald-400 ring-2 ring-emerald-400/20' : 'bg-cyan-400 ring-2 ring-cyan-400/20'}`} />
+                  Roteiro Cena {sceneNum} ({index * 10}-{(index + 1) * 10}s)
                 </label>
-                <span className={`text-[11px] font-mono px-2 py-0.5 rounded-full font-bold border ${
+                <span className={`text-[11px] font-mono px-2.5 py-0.5 rounded-full font-bold border ${
                   isFirst
                     ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
                     : 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30'
                 }`}>
-                  {isFirst ? 'Bloco Inicial' : 'Frame-Lock Contínuo'}
+                  {isFirst ? 'Cena 1 (Inicial)' : `Cena ${sceneNum} (Frame-Lock)`}
                 </span>
               </div>
 
@@ -230,11 +237,11 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                 rows={2}
                 value={text}
                 onChange={(e) => handleUpdateScript(index, e.target.value)}
-                placeholder={`Digite a fala em PT-BR para o Bloco ${blockNum} (máx. 16-20 palavras)...`}
+                placeholder={`Digite a fala em PT-BR para a Cena ${sceneNum} (16 a 20 palavras @ 1.2x)...`}
                 className="w-full text-xs sm:text-sm rounded-xl p-2.5 bg-[#07090e] border border-[#242b3d] focus:border-amber-400 text-slate-100 placeholder:text-slate-600 resize-none font-sans leading-relaxed"
               />
 
-              {/* Medidor de Palavras do Bloco */}
+              {/* Medidor de Palavras da Cena */}
               <div className={`p-2 rounded-xl border text-xs flex items-center justify-between gap-2 ${
                 analysis.status === 'ideal'
                   ? 'bg-emerald-950/35 border-emerald-700/60 text-emerald-300'
@@ -253,7 +260,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                   <span>~{analysis.estimatedSeconds}s (1.2x)</span>
                 </div>
                 <span className="font-mono font-bold text-[11px] uppercase">
-                  {analysis.status === 'ideal' ? '✓ Ideal' : analysis.status === 'warning' ? '⚠ Atenção' : 'Vazio'}
+                  {analysis.status === 'ideal' ? '✓ Ideal (16-20)' : analysis.status === 'warning' ? '⚠ Atenção (>20)' : 'Aguardando'}
                 </span>
               </div>
             </div>

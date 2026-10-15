@@ -92,7 +92,7 @@ export default function App() {
 
           if (data.cenas_cronologicas && data.cenas_cronologicas.length > 0) {
             updated.visualIdea = data.cenas_cronologicas
-              .map((c: any) => `Bloco ${c.bloco}: ${c.ato_1_pt} ${c.ato_2_pt}`)
+              .map((c: any) => `Cena ${c.bloco}: ${c.ato_1_pt} ${c.ato_2_pt}`)
               .join(' | ');
           } else if (data.descricao_curta_cena_1) {
             updated.visualIdea = `${data.descricao_curta_cena_1}${data.descricao_curta_cena_2 ? ' ' + data.descricao_curta_cena_2 : ''}`;
@@ -104,7 +104,7 @@ export default function App() {
         showToast('Direção de Arte e Raciocínio calculados pelo Diretor!');
       } else {
         // Fallback local robusto baseado no catálogo completo dos 15 grupos
-        const { updatedState, auditSummary } = evaluateGuidedAutonomyLocally(sceneState);
+        const { updatedState } = evaluateGuidedAutonomyLocally(sceneState);
         setSceneState(updatedState);
         showToast('Direção recalculada localmente pelo Diretor!');
       }
@@ -148,9 +148,9 @@ export default function App() {
   };
 
   const handleCopyAllEN = () => {
-    // Copia todos os blocos ativos em inglês
-    const allEn = compiled.blocks.map(b => `// === BLOCO ${b.blockNumber} ===\n${b.promptEn}`).join('\n\n');
-    handleCopyText(allEn, 'Todos os Blocos (EN)');
+    // Copia todas as cenas ativas em inglês
+    const allEn = compiled.blocks.map(b => `// === CENA ${b.blockNumber} ===\n${b.promptEn}`).join('\n\n');
+    handleCopyText(allEn, 'Todas as Cenas (EN)');
     setCopiedType('en');
     setTimeout(() => setCopiedType(null), 2000);
   };

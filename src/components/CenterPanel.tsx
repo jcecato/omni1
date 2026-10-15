@@ -2,8 +2,8 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * Painel Central — Limpo e Objetivo: Apenas o Bloco e o Prompt com abas EN / PT / Copiar
- * Detalhes de câmera, luz, caixa e auditoria ficam exclusivamente no Modal "Abrir Análise".
+ * Painel Central — Limpeza Total: Foco Exclusivo nas Saídas Finais Compiladas (Cena 1, Cena 2... Cena 6)
+ * Topo: Botão Raciocínio do Diretor & Cronologia (Modal) + Barra de Solicitar Mudança Rápida
  */
 
 import React, { useState } from 'react';
@@ -39,9 +39,9 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
   onApplyQuickChange,
   quickChangeLog,
   onCopyText,
-  isCopied
+  isCopied: _isCopied
 }) => {
-  // Aba de idioma por bloco: chave = `block_${num}`, valor = 'en' | 'pt'
+  // Aba de idioma ativa por cena: chave = sceneNum, valor = 'en' | 'pt'
   const [tabByBlock, setTabByBlock] = useState<Record<number, 'en' | 'pt'>>({});
   const [copiedBlockNum, setCopiedBlockNum] = useState<number | null>(null);
   const [quickInput, setQuickInput] = useState('');
@@ -54,9 +54,9 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
     setQuickInput('');
   };
 
-  const handleCopyBlock = (blockNum: number, text: string, lang: 'en' | 'pt') => {
-    onCopyText(text, `Bloco ${blockNum} (${lang.toUpperCase()})`);
-    setCopiedBlockNum(blockNum);
+  const handleCopyBlock = (sceneNum: number, text: string, lang: 'en' | 'pt') => {
+    onCopyText(text, `Cena ${sceneNum} (${lang.toUpperCase()})`);
+    setCopiedBlockNum(sceneNum);
     setTimeout(() => setCopiedBlockNum(null), 2000);
   };
 
@@ -77,50 +77,50 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
 
   return (
     <>
-      <main className="bg-[#10131c] border border-[#242b3d] rounded-2xl p-4 sm:p-5 flex flex-col gap-4 shadow-xl">
-        {/* BOTÃO GRANDE DESTACADO: LER RACIOCÍNIO DO DIRETOR (Onde fica toda a auditoria e análise de arte) */}
+      <main className="bg-[#10131c] border border-[#242b3d] rounded-2xl p-4 sm:p-5 flex flex-col gap-5 shadow-xl">
+        {/* TOPO ITEM A: BOTÃO DESTACADO: ABRIR RACIOCÍNIO DO DIRETOR & CRONOLOGIA (MODAL) */}
         <button
           type="button"
           onClick={() => setIsDirectorModalOpen(true)}
-          className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-[#161c29] to-cyan-500/20 border-2 border-amber-400/80 hover:border-amber-300 text-amber-200 hover:text-white shadow-xl shadow-amber-500/10 flex items-center justify-between group transition-all active:scale-[0.99] cursor-pointer"
+          className="w-full py-4 px-4 sm:px-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-[#161c29] to-cyan-500/20 border-2 border-amber-400 hover:border-amber-300 text-amber-200 hover:text-white shadow-xl shadow-amber-500/10 flex items-center justify-between group transition-all active:scale-[0.99] cursor-pointer"
         >
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform shrink-0 shadow-inner">
               <BookOpen className="w-5 h-5" />
             </div>
             <div className="text-left">
               <span className="block text-sm sm:text-base font-black tracking-wide text-white group-hover:text-amber-300 transition-colors">
-                📖 Ler Raciocínio do Diretor (Por que essas escolhas?)
+                📖 Abrir Raciocínio do Diretor & Cronologia (Modal)
               </span>
               <span className="block text-xs text-amber-200/80 font-medium">
-                Auditoria técnica, enquadramento, luz, Z-Depth e tags justificadas
+                Linha do tempo de 1 a 6 cenas, auditoria técnica e justificativa de cada ferramenta
               </span>
             </div>
           </div>
-          <span className="text-xs font-mono px-3 py-1 rounded-xl bg-amber-500 text-black font-black uppercase tracking-wider shrink-0 shadow-md">
+          <span className="text-xs font-mono px-3.5 py-1.5 rounded-xl bg-amber-500 text-black font-black uppercase tracking-wider shrink-0 shadow-md">
             Abrir Análise
           </span>
         </button>
 
-        {/* AJUSTE RÁPIDO (NLP Fast Engine) */}
-        <div className="bg-[#0b0d13] border border-cyan-500/30 rounded-2xl p-3 flex flex-col gap-2">
+        {/* TOPO ITEM B: BARRA ENXUTA: SOLICITAR MUDANÇA RÁPIDA (NLP Fast Engine) */}
+        <div className="bg-[#0b0d13] border border-cyan-500/35 rounded-2xl p-3 flex flex-col gap-2 shadow-sm">
           <form onSubmit={handleQuickSubmit} className="flex items-center gap-2">
             <div className="flex items-center gap-1.5 text-xs font-bold text-cyan-300 pl-1 shrink-0">
               <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Ajuste Rápido:</span>
+              <span>🔄 Solicitar Mudança Rápida:</span>
             </div>
             <input
               type="text"
               value={quickInput}
               onChange={(e) => setQuickInput(e.target.value)}
-              placeholder='Ex: "mude para luz quente", "sem caixa", "perfil empatia", "tirar microfone"...'
+              placeholder='Ex: "mude para luz quente", "sem caixa Z-Depth", "perfil empatia", "tirar microfone"...'
               className="flex-1 text-xs sm:text-sm rounded-xl px-3 py-2 bg-[#07090e] border border-[#242b3d] focus:border-cyan-400 text-slate-100 placeholder:text-slate-500 font-sans"
             />
             <button
               type="submit"
-              className="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+              className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-md shrink-0 active:scale-95"
             >
-              <Send className="w-3 h-3" />
+              <Send className="w-3.5 h-3.5" />
               <span>Aplicar</span>
             </button>
           </form>
@@ -133,40 +133,46 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
           )}
         </div>
 
-        {/* EXIBIÇÃO OBJETIVA DOS BLOCOS: Exibe estritamente Bloco 1..X com EN / PT / Copiar e o texto do prompt */}
-        <div className="flex flex-col gap-4">
+        {/* SAÍDA FINAL COMPILADA: Cartões separados de forma limpa por Cena (Cena 1, Cena 2... Cena 6) */}
+        <div className="flex flex-col gap-5">
           {blocksToRender.map((block) => {
-            const currentTab = tabByBlock[block.blockNumber] || 'en';
+            const sceneNum = block.blockNumber;
+            const isFirstScene = sceneNum === 1;
+            const currentTab = tabByBlock[sceneNum] || 'en';
             const promptText = currentTab === 'en' ? block.promptEn : block.promptPt;
             const charCount = currentTab === 'en' ? block.charCountEn : block.charCountPt;
-            const isBlockCopied = copiedBlockNum === block.blockNumber;
+            const isBlockCopied = copiedBlockNum === sceneNum;
+
+            const sceneTitle = isFirstScene
+              ? 'PROMPT FINAL — CENA 1 (0-10s)'
+              : `PROMPT FINAL — CENA ${sceneNum} (${(sceneNum - 1) * 10}-${sceneNum * 10}s - Continuidade Frame-Lock)`;
 
             return (
               <section 
-                key={block.blockNumber}
-                className="bg-[#0b0d13] border border-[#242b3d] rounded-2xl p-4 flex flex-col gap-3 shadow-md"
+                key={sceneNum}
+                className="bg-[#0b0d13] border border-[#242b3d] rounded-2xl p-4 sm:p-5 flex flex-col gap-3.5 shadow-lg relative overflow-hidden"
               >
-                {/* Linha Superior: Título do Bloco + Abas EN/PT + Botão Copiar */}
-                <div className="flex items-center justify-between flex-wrap gap-2.5 border-b border-[#1f2537] pb-3">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-amber-400" />
-                    <h2 className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-100">
-                      Bloco {block.blockNumber}
+                {/* Faixa lateral indicativa de status */}
+                <div className={`absolute top-0 left-0 bottom-0 w-1 ${isFirstScene ? 'bg-amber-400' : 'bg-cyan-400'}`} />
+
+                {/* Cabeçalho do Card da Cena */}
+                <div className="flex items-center justify-between flex-wrap gap-3 border-b border-[#1f2537] pb-3">
+                  <div className="flex items-center gap-2.5">
+                    <FileText className={`w-4 h-4 ${isFirstScene ? 'text-amber-400' : 'text-cyan-400'}`} />
+                    <h2 className="text-xs sm:text-sm md:text-base font-black uppercase tracking-wider text-slate-100 font-sans">
+                      {sceneTitle}
                     </h2>
-                    <span className="text-xs font-mono text-slate-400">
-                      ({(block.blockNumber - 1) * 10}-{block.blockNumber * 10}s)
-                    </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {/* Abas EN / PT */}
+                  <div className="flex items-center gap-2.5">
+                    {/* Alternância PT-BR / EN */}
                     <div className="flex items-center bg-[#151924] p-1 rounded-xl border border-[#242b3d]">
                       <button
                         type="button"
-                        onClick={() => setTabByBlock(prev => ({ ...prev, [block.blockNumber]: 'en' }))}
+                        onClick={() => setTabByBlock(prev => ({ ...prev, [sceneNum]: 'en' }))}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           currentTab === 'en'
-                            ? 'bg-amber-500 text-black font-black'
+                            ? 'bg-amber-500 text-black font-black shadow'
                             : 'text-slate-400 hover:text-white'
                         }`}
                       >
@@ -174,35 +180,39 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
                       </button>
                       <button
                         type="button"
-                        onClick={() => setTabByBlock(prev => ({ ...prev, [block.blockNumber]: 'pt' }))}
+                        onClick={() => setTabByBlock(prev => ({ ...prev, [sceneNum]: 'pt' }))}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           currentTab === 'pt'
-                            ? 'bg-amber-500 text-black font-black'
+                            ? 'bg-amber-500 text-black font-black shadow'
                             : 'text-slate-400 hover:text-white'
                         }`}
                       >
-                        PT
+                        PT-BR
                       </button>
                     </div>
 
-                    {/* Botão Copiar */}
+                    {/* Botão Copiar Prompt */}
                     <button
                       type="button"
-                      onClick={() => handleCopyBlock(block.blockNumber, promptText, currentTab)}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-500 text-black font-black text-xs shadow-md shadow-amber-500/20 hover:bg-amber-400 active:scale-95 transition cursor-pointer"
+                      onClick={() => handleCopyBlock(sceneNum, promptText, currentTab)}
+                      className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-amber-500 text-black font-black text-xs shadow-md shadow-amber-500/20 hover:bg-amber-400 active:scale-95 transition cursor-pointer"
                     >
                       {isBlockCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{isBlockCopied ? 'Copiado!' : `Copiar (${currentTab.toUpperCase()})`}</span>
+                      <span>{isBlockCopied ? 'Copiado!' : `Copiar Prompt (${currentTab.toUpperCase()})`}</span>
                     </button>
                   </div>
                 </div>
 
-                {/* Status do Limite de Caracteres (<1.800) */}
+                {/* Status de Limite de Caracteres (<1.800 chars) */}
                 <div className="flex items-center justify-between text-xs px-1">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5" title="Contagem de caracteres para motores de vídeo IA (Runway Gen-3, Kling, Sora, Luma)">
                     <span className="text-slate-400">Caracteres:</span>
                     <span className={`font-mono font-bold ${
-                      charCount <= 1800 ? 'text-emerald-400' : 'text-rose-400'
+                      charCount <= 1800 
+                        ? 'text-emerald-400' 
+                        : charCount <= 2200 
+                        ? 'text-amber-400' 
+                        : 'text-rose-400'
                     }`}>
                       {charCount} / 1.800
                     </span>
@@ -211,10 +221,15 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
                     <span className="text-emerald-400 font-semibold text-[11px] flex items-center gap-1">
                       ✓ Dentro do limite seguro (&lt;1.800 chars)
                     </span>
+                  ) : charCount <= 2200 ? (
+                    <span className="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                      Moderado ({charCount} chars — suportado em Kling/Sora)
+                    </span>
                   ) : (
                     <span className="text-rose-400 font-semibold text-[11px] flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
-                      Ultrapassou 1.800 chars
+                      Risco de truncamento (&gt;2.200 chars)
                     </span>
                   )}
                 </div>
@@ -222,7 +237,7 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
                 {/* Texto do Prompt Compilado */}
                 <div className="relative">
                   <pre 
-                    className="text-xs sm:text-sm text-slate-100 whitespace-pre-wrap font-mono bg-[#07090e] p-4 rounded-xl border border-[#283248] overflow-y-auto max-h-[360px] leading-relaxed selection:bg-amber-500/30 selection:text-amber-200"
+                    className="text-xs sm:text-sm text-slate-100 whitespace-pre-wrap font-mono bg-[#07090e] p-4 rounded-xl border border-[#283248] overflow-y-auto max-h-[380px] leading-relaxed selection:bg-amber-500/30 selection:text-amber-200"
                   >
                     {promptText}
                   </pre>
@@ -233,7 +248,7 @@ export const CenterPanel: React.FC<CenterPanelProps> = ({
         </div>
       </main>
 
-      {/* Modal Explicativo de Raciocínio do Diretor (Onde fica toda a auditoria técnica de Câmera, Luz, Z-Depth e Biomecânica) */}
+      {/* Modal Explicativo de Raciocínio do Diretor & Cronologia (Toda a auditoria técnica de 1 a 6 cenas) */}
       <DirectorModal
         isOpen={isDirectorModalOpen}
         onClose={() => setIsDirectorModalOpen(false)}
