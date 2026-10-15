@@ -1,0 +1,6 @@
+{
+  "name": "Motor de Direção de Vídeo com IA",
+  "description": "Estação desktop para produção em escala de vídeos com avatares de IA realistas para saúde e corporativo, alimentada por Gemini 3.8 Flash.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
