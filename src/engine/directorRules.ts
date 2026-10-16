@@ -37,6 +37,12 @@ import {
   ZDepthBoxOption
 } from './catalog13Groups';
 
+import {
+  getPhysiologyPresets,
+  DEFAULT_PHYSIOLOGY_PRESETS,
+  PhysiologyPreset
+} from './physiologyPresets';
+
 export interface SceneDirectiveState {
   blockCount: number; // 1 to 6 (quantos blocos o usuário quer fazer)
   blockScripts: string[]; // Roteiros de cada bloco (índice 0 = Bloco 1, 1 = Bloco 2, ..., até 5 = Bloco 6)
@@ -57,6 +63,7 @@ export interface SceneDirectiveState {
   zDepthBoxId: 'sem_caixa' | 'topo_headroom' | 'atras_gigante' | 'lateral_perspectiva';
   emotionalToneId: string;
   activeSkinFilters: Record<string, boolean>;
+  selectedPhysiologyId?: string; // ID do preset de fisiologia ativo
 
   // Campos de compatibilidade
   speechBlock1?: string;
@@ -288,12 +295,17 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
         ato2Pt = `Ato 2 (${midSec}-${endSec}s): Preparação para fechamento com alta retenção do espectador.`;
         ato1En = `Act 1 (${startSec}-${midSec}s): Parallax spatial glide accentuating visual volume and key data.`;
         ato2En = `Act 2 (${midSec}-${endSec}s): Pre-closing transition maintaining maximum viewer retention.`;
-      } else {
-        ato1Pt = `Ato 1 (${startSec}-${midSec}s): Plano consolidado de autoridade máxima, estabilização perfeita.`;
-        ato2Pt = `Ato 2 (${midSec}-${endSec}s): Desfecho contundente com olhar fixo, finalização sem jump-cut.`;
-        ato1En = `Act 1 (${startSec}-${midSec}s): Consolidated master framing of peak authority, rock-solid posture.`;
-        ato2En = `Act 2 (${midSec}-${endSec}s): Powerful closing delivery with unwavering eye contact, zero jump-cut.`;
       }
+    }
+
+    // Se modelo de fisiologia estiver selecionado ou tag 'mod_fisiologia_3d' ativa
+    const activePhysio = state.selectedPhysiologyId
+      ? (typeof window !== 'undefined' ? getPhysiologyPresets().find(p => p.id === state.selectedPhysiologyId) : DEFAULT_PHYSIOLOGY_PRESETS.find(p => p.id === state.selectedPhysiologyId))
+      : (state.preferences?.includes('mod_fisiologia_3d') ? DEFAULT_PHYSIOLOGY_PRESETS[0] : null);
+
+    if (activePhysio) {
+      ato1Pt = activePhysio.ptPrompt;
+      ato1En = activePhysio.enPrompt;
     }
 
     const varsPt: Record<string, string> = {
@@ -310,13 +322,13 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       NEGATIVO_TEXTO_DINAMICO: negPt,
       TIPO_MICROFONE: microphone.ptDesc,
       CAMERA_E_LUZ_CENA: `${lensFraming.ptDesc}, ${lighting.ptDesc}`,
-      ELEMENTO_MOTION_ZDEPTH: zDepth.ptDesc,
+      ELEMENTO_MOTION_ZDEPTH: activePhysio ? `${zDepth.ptDesc}. Simulação 3D: ${activePhysio.ptPrompt}` : zDepth.ptDesc,
       PERFIL_CORPORAL_SELECIONADO: bodyProfile.ptDesc,
       SAIDA_FINAL_DINAMICA: zDepth.outputRulePt,
       MODO_BOCA_V2V: 'Sincronia labial sutil, dentes invisíveis, mandíbula estável.',
       AMBIENTE_E_LUZ_V2V: `${scenario.ptDesc}; ${lighting.ptDesc}`,
       CAMERA_E_TRANSICAO_V2V: `${cameraMove.ptDesc}; ${cameraAngle.ptDesc}`,
-      CONSTRUCAO_CAIXA_MOTION_V2V: zDepth.ptDesc
+      CONSTRUCAO_CAIXA_MOTION_V2V: activePhysio ? `${zDepth.ptDesc}. Simulação 3D: ${activePhysio.ptPrompt}` : zDepth.ptDesc
     };
 
     const varsEn: Record<string, string> = {
@@ -333,13 +345,12 @@ export function compileScene(state: SceneDirectiveState): CompiledOutput {
       NEGATIVO_TEXTO_DINAMICO: negEn,
       TIPO_MICROFONE: microphone.enDesc,
       CAMERA_E_LUZ_CENA: `${lensFraming.enDesc}, ${lighting.enDesc}`,
-      ELEMENTO_MOTION_ZDEPTH: zDepth.enDesc,
+      ELEMENTO_MOTION_ZDEPTH: activePhysio ? `${zDepth.enDesc}. 3D Simulation: ${activePhysio.enPrompt}` : zDepth.enDesc,
       PERFIL_CORPORAL_SELECIONADO: bodyProfile.enDesc,
       SAIDA_FINAL_DINAMICA: zDepth.outputRuleEn,
       MODO_BOCA_V2V: 'Subtle lip-sync, invisible teeth, stable jaw motion.',
       AMBIENTE_E_LUZ_V2V: `${scenario.enDesc}; ${lighting.enDesc}`,
-      CAMERA_E_TRANSICAO_V2V: `${cameraMove.enDesc}; ${cameraAngle.enDesc}`,
-      CONSTRUCAO_CAIXA_MOTION_V2V: zDepth.enDesc
+      CONSTRUCAO_CAIXA_MOTION_V2V: activePhysio ? `${zDepth.enDesc}. 3D Simulation: ${activePhysio.enPrompt}` : zDepth.enDesc
     };
 
     let pPt = '';
@@ -638,6 +649,22 @@ export function evaluateGuidedAutonomyLocally(state: SceneDirectiveState): {
   const adjustedTags: string[] = [];
 
   // Mapeamento e Auditoria dos 15 Grupos
+
+  // 0. Modelo de Vídeo & Fisiologia 3D Ultra-realista
+  if (prefs.includes('mod_fisiologia_3d') || next.selectedPhysiologyId) {
+    const physio = next.selectedPhysiologyId
+      ? (typeof window !== 'undefined' ? getPhysiologyPresets().find(p => p.id === next.selectedPhysiologyId) : DEFAULT_PHYSIOLOGY_PRESETS.find(p => p.id === next.selectedPhysiologyId))
+      : DEFAULT_PHYSIOLOGY_PRESETS[0];
+    approvedTags.push(`Fisiologia Humana 3D Ultra-realista (${physio?.label || 'Simulação Biomédica com PBR, SSS e CFD'})`);
+    if (next.masterMode !== 'voiceover') {
+      next.masterMode = 'voiceover';
+      approvedTags.push('Molde Mestre ajustado para Voiceover / B-Roll cinematográfico para simulação biomédica interna');
+    }
+  } else if (prefs.includes('mod_personagem_3d')) {
+    approvedTags.push('Personagem Estilizado 3D (Animação expressiva para hábitos cotidianos)');
+  } else if (prefs.includes('mod_humano_elem')) {
+    approvedTags.push('Humano com Elementos (Apresentador real integrado a camadas gráficas)');
+  }
 
   // 1. Molde Mestre
   if (prefs.includes('op_image_to_video') || prefs.includes('voz_trava_zero')) {

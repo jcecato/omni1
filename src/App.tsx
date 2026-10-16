@@ -120,19 +120,26 @@ export default function App() {
 
   const handleSelectPreset = (p: HeaderPreset) => {
     setSceneState((prev) => {
-      const updatedScripts = [...(prev.blockScripts || [])];
-      updatedScripts[0] = p.speechText;
+      const updatedScripts = p.blockScripts && p.blockScripts.length > 0 
+        ? [...p.blockScripts] 
+        : [...(prev.blockScripts || [])];
+      if (!p.blockScripts || p.blockScripts.length === 0) {
+        updatedScripts[0] = p.speechText;
+      }
       return {
         ...prev,
         masterMode: p.masterMode,
+        blockCount: p.blockCount || (p.blockScripts && p.blockScripts.length > 0 ? p.blockScripts.length : prev.blockCount),
         blockScripts: updatedScripts,
-        speechBlock1: p.speechText,
+        speechBlock1: updatedScripts[0] || p.speechText,
         speechText: p.speechText,
         visualIdea: p.visualIdea,
         bodyProfileId: p.bodyProfileId,
         zDepthBoxId: p.zDepthBoxId,
         scenarioId: p.scenarioId,
-        lightingId: p.lightingId
+        lightingId: p.lightingId,
+        selectedPhysiologyId: p.selectedPhysiologyId,
+        preferences: p.preferences ? [...p.preferences] : prev.preferences
       };
     });
     setQuickChangeLog(`Pré-configuração "${p.title}" aplicada com sucesso.`);
@@ -164,17 +171,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080a0f] text-slate-200 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
-      {/* Header Superior */}
+    <div className="min-h-screen w-full bg-[#080a0f] text-slate-200 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
+      {/* Header Superior com Presets Nominais */}
       <Header
+        currentState={sceneState}
         onSelectPreset={handleSelectPreset}
         onCopyAllEN={handleCopyAllEN}
         onCopySpeechPT={handleCopySpeechPT}
         copiedType={copiedType}
       />
 
-      {/* Grid Principal dos 3 Painéis */}
-      <div className="flex-1 max-w-[1920px] w-full mx-auto p-4 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+      {/* Grid Principal dos 3 Painéis (Largura Total Máxima Expandida) */}
+      <div className="flex-1 w-full max-w-none px-2 sm:px-3 lg:px-4 py-3 grid grid-cols-1 lg:grid-cols-12 gap-3 xl:gap-4">
         {/* Painel Esquerdo: Molde Mestre, Seletor 1 a 6 e Roteiros estritos */}
         <div className="lg:col-span-4 h-fit">
           <LeftPanel

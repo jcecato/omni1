@@ -546,7 +546,7 @@ export interface PreferenceCategory {
 export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   {
     id: 'video_model_modes',
-    title: '1. VIDEO MODEL & MASTER MODES',
+    title: '1. MODELO DE VÍDEO & MODOS MESTRES',
     chips: [
       { id: 'mod_humano_elem', label: 'Humano com Elementos', tooltip5Words: 'Apresentador real integrado com gráficos.' },
       { id: 'mod_fisiologia_3d', label: 'Fisiologia 3D Ultra-realista', tooltip5Words: 'Simulação biomédica interna ultra realista.' },
@@ -563,7 +563,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'special_transitions',
-    title: '2. SPECIAL TRANSITIONS',
+    title: '2. TRANSIÇÕES ESPECIAIS',
     chips: [
       { id: 'tr_whip_pan', label: 'Whip-Pan Motion Blur', tooltip5Words: 'Chicote veloz conectando dois ambientes.' },
       { id: 'tr_zaxis_pass', label: 'Z-Axis Pass-Through', tooltip5Words: 'Câmera atravessa card revelando cena.' },
@@ -574,7 +574,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'camera_distance_framing',
-    title: '3. DISTANCE, FRAMING & ANGLES',
+    title: '3. DISTÂNCIA, ENQUADRAMENTO & ÂNGULOS',
     chips: [
       { id: 'dist_macro_20cm', label: 'Distância Macro (20 cm)', tooltip5Words: 'Foco extremo desfocando fundo cinquenta.' },
       { id: 'dist_curta_1m', label: 'Distância Curta (1m)', tooltip5Words: 'Enquadramento fechado com alta presença.' },
@@ -595,7 +595,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'camera_movements',
-    title: '4. CAMERA MOVEMENTS',
+    title: '4. MOVIMENTOS DE CÂMERA',
     chips: [
       { id: 'mov_orbital_tilt', label: '3D Orbital Arc + Tilt', tooltip5Words: 'Rotação diagonal revelando o horizonte.' },
       { id: 'mov_slow_pushin', label: 'Slow Push-In (Zoom In)', tooltip5Words: 'Aproximação contínua aumentando retenção visual.' },
@@ -609,7 +609,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'scenarios_solar',
-    title: '5. SCENARIOS & SOLAR LIGHTING',
+    title: '5. CENÁRIOS & ILUMINAÇÃO SOLAR',
     chips: [
       { id: 'sol_06h', label: 'Campo Aberto (Sol 06:00)', tooltip5Words: 'Luz solar dourada matinal direta.' },
       { id: 'sol_10h', label: 'Campo Aberto (Sol 10:00)', tooltip5Words: 'Iluminação natural limpa sombras médias.' },
@@ -625,7 +625,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'microphones_props',
-    title: '6. MICROPHONES & SCENE PROPS',
+    title: '6. MICROFONES & ACESSÓRIOS DE CENA',
     chips: [
       { id: 'mic_braco_baixo', label: 'Braço Articulado Baixo', tooltip5Words: 'Microfone broadcast fixado na bancada.' },
       { id: 'mic_moeda_mao', label: 'Microfone Moeda (Mão)', tooltip5Words: 'Cápsula magnética segura ao queixo.' },
@@ -637,7 +637,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'spatial_architecture',
-    title: '7. SPATIAL ARCHITECTURE (9:16)',
+    title: '7. ARQUITETURA ESPACIAL (9:16)',
     chips: [
       { id: 'arq_top_hud', label: 'Top-Floating HUD', tooltip5Words: 'Gráficos suspensos acima linha visual.' },
       { id: 'arq_midground_z1', label: 'Z-Depth Midground (Z-1)', tooltip5Words: 'Elementos gráficos atrás do apresentador.' },
@@ -650,7 +650,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'animations_motion',
-    title: '8. ANIMATIONS & MOTION DESIGN',
+    title: '8. ANIMAÇÕES & MOTION DESIGN',
     chips: [
       { id: 'ani_mini_cards', label: 'Mini Cards de Topo', tooltip5Words: 'Caixas compactas contendo dados rápidos.' },
       { id: 'ani_dataviz', label: 'Gráficos Data-Viz Dinâmicos', tooltip5Words: 'Curvas barras animadas com dados.' },
@@ -667,7 +667,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'textures_borders',
-    title: '9. TEXTURES, BORDERS & FINISHES',
+    title: '9. TEXTURAS, BORDAS & ACABAMENTOS',
     chips: [
       { id: 'tex_glass_14110f', label: 'Glassmorphism Fosco (#14110F)', tooltip5Words: 'Vidro escuro com desfoque traseiro.' },
       { id: 'tex_deep_space', label: 'Deep Space Glass', tooltip5Words: 'Vidro azulado com aspecto tecnológico.' },
@@ -684,7 +684,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'lighting_typography',
-    title: '10. LIGHTING & TYPOGRAPHY (17PX)',
+    title: '10. ILUMINAÇÃO & TIPOGRAFIA (17PX)',
     chips: [
       { id: 'luz_chiaroscuro', label: 'Chiaroscuro Studio', tooltip5Words: 'Foco facial com laterais escurecidas.' },
       { id: 'luz_warm_golden', label: 'Luz Quente (Âmbar/Golden)', tooltip5Words: 'Tonalidade dourada transmitindo conforto proximidade.' },
@@ -706,7 +706,7 @@ export const PREFERENCE_ACCORDIONS: PreferenceCategory[] = [
   },
   {
     id: 'voice_acoustics_biomech',
-    title: '11. VOICE, ACOUSTICS & BIOMECHANICS',
+    title: '11. VOZ, ACÚSTICA & BIOMECÂNICA',
     chips: [
       { id: 'voz_trava_zero', label: 'Trava Labial Frame-Zero', tooltip5Words: 'Lábios selados desde frame zero.' },
       { id: 'voz_exp_mapeadas', label: 'Expressões Mapeadas', tooltip5Words: 'Microexpressões alinhadas ao tom narrativo.' },

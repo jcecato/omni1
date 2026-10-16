@@ -27,7 +27,10 @@ import {
   Search,
   X,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Dna,
+  BookOpen,
+  Tag
 } from 'lucide-react';
 
 import { 
@@ -36,6 +39,9 @@ import {
 } from '../engine/catalog13Groups';
 
 import { SceneDirectiveState } from '../engine/directorRules';
+import { PhysiologyModal } from './PhysiologyModal';
+import { TagsGuideModal } from './TagsGuideModal';
+import { getPhysiologyPresets, PhysiologyPreset } from '../engine/physiologyPresets';
 
 interface RightPanelProps {
   state: SceneDirectiveState;
@@ -55,17 +61,53 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
   // Campo de busca rápida de tags
   const [searchQuery, setSearchQuery] = useState('');
+  const [isPhysiologyModalOpen, setIsPhysiologyModalOpen] = useState(false);
+  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
 
-  // Estado do popup flutuante de 5 palavras com temporizador de 5 segundos
-  const [activeTooltip, setActiveTooltip] = useState<{ chipId: string; text: string } | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  // Preset ativo de fisiologia 3D
+  const currentPhysioPreset = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    const presets = getPhysiologyPresets();
+    if (state.selectedPhysiologyId) {
+      return presets.find(p => p.id === state.selectedPhysiologyId) || null;
+    }
+    if ((state.preferences || []).includes('mod_fisiologia_3d')) {
+      return presets[0];
+    }
+    return null;
+  }, [state.selectedPhysiologyId, state.preferences]);
 
-  // Limpar timeout no unmount
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
+  const handleSelectPhysiologyPreset = (preset: PhysiologyPreset) => {
+    const currentPrefs = state.preferences || [];
+    const withFisio = currentPrefs.includes('mod_fisiologia_3d')
+      ? currentPrefs
+      : [...currentPrefs, 'mod_fisiologia_3d'];
+
+    onUpdateState({
+      selectedPhysiologyId: preset.id,
+      preferences: withFisio,
+      masterMode: 'voiceover',
+      visualIdea: `Simulação 3D: ${preset.label}. ${preset.tooltip5Words}`
+    });
+    setIsPhysiologyModalOpen(false);
+  };
+
+  const handleApplyPromptDirect = (preset: PhysiologyPreset, lang: 'pt' | 'en') => {
+    const currentPrefs = state.preferences || [];
+    const withFisio = currentPrefs.includes('mod_fisiologia_3d')
+      ? currentPrefs
+      : [...currentPrefs, 'mod_fisiologia_3d'];
+
+    const chosenPrompt = lang === 'pt' ? preset.ptPrompt : preset.enPrompt;
+
+    onUpdateState({
+      selectedPhysiologyId: preset.id,
+      preferences: withFisio,
+      masterMode: 'voiceover',
+      visualIdea: chosenPrompt
+    });
+    setIsPhysiologyModalOpen(false);
+  };
 
   const toggleAccordion = (id: string) => {
     setOpenSections(prev => ({
@@ -87,37 +129,30 @@ export const RightPanel: React.FC<RightPanelProps> = ({
   };
 
   const handleClearAllPreferences = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setActiveTooltip(null);
-    onUpdateState({ preferences: [] });
+    onUpdateState({ preferences: [], selectedPhysiologyId: undefined });
   };
 
-  const handleChipClick = (chipId: string, tooltipText: string) => {
+  const handleChipClick = (chipId: string) => {
     const currentPrefs = state.preferences || [];
     const isAlreadySelected = currentPrefs.includes(chipId);
 
-    // Se estiver desmarcando: remove e oculta imediatamente o popup
+    // Se for o chip de Fisiologia 3D e não estiver ativo, abre o modal de fisiologia
+    if (chipId === 'mod_fisiologia_3d' && !isAlreadySelected) {
+      setIsPhysiologyModalOpen(true);
+    }
+
+    // Se estiver desmarcando: remove da lista
     if (isAlreadySelected) {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      if (activeTooltip?.chipId === chipId) {
-        setActiveTooltip(null);
-      }
       onUpdateState({
-        preferences: currentPrefs.filter(id => id !== chipId)
+        preferences: currentPrefs.filter(id => id !== chipId),
+        ...(chipId === 'mod_fisiologia_3d' ? { selectedPhysiologyId: undefined } : {})
       });
       return;
     }
 
-    // Se estiver ativando: adiciona, exibe popup em 17px por 5 segundos
+    // Se estiver ativando: adiciona diretamente sem popup
     const nextPrefs = [...currentPrefs, chipId];
     onUpdateState({ preferences: nextPrefs });
-
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setActiveTooltip({ chipId, text: tooltipText });
-
-    timerRef.current = setTimeout(() => {
-      setActiveTooltip(null);
-    }, 5000);
   };
 
   const toggleSkinFilter = (key: string) => {
@@ -191,6 +226,24 @@ export const RightPanel: React.FC<RightPanelProps> = ({
           </h2>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsTagsModalOpen(true)}
+            className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer flex items-center gap-1 font-bold"
+            title="Abrir Guia Geral de Tags & 5 Exemplos Comuns de Uso"
+          >
+            <Tag className="w-3 h-3 text-amber-400" />
+            <span>TAGS</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsPhysiologyModalOpen(true)}
+            className="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/25 transition cursor-pointer flex items-center gap-1 font-bold"
+            title="Abrir Catálogo Oficial de Fisiologia Humana 3D"
+          >
+            <Dna className="w-3 h-3 text-cyan-400" />
+            <span>Fisio 3D</span>
+          </button>
           {activeCount > 0 && (
             <button
               type="button"
@@ -208,7 +261,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
       </div>
 
       <div className="text-xs text-slate-400 leading-relaxed -mt-1">
-        Selecione tags dos <strong className="text-slate-200">15 Grupos Técnicos</strong>. O Diretor de IA avaliará suas preferências e justificará no modal a aprovação ou adaptação de cada uma.
+        Selecione tags dos <strong className="text-slate-200">15 Grupos Técnicos</strong> (organizados nos 11 acordeões práticos abaixo). O Diretor de IA aplicará suas escolhas ao prompt em tempo real e justificará no modal a aprovação ou adaptação de cada uma.
       </div>
 
       {/* Barra de Busca de Tags e Controles Expandir / Recolher */}
@@ -291,40 +344,65 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 <div className="p-3 pt-0 flex flex-wrap gap-1.5">
                   {category.chips.map((chip) => {
                     const isSelected = (state.preferences || []).includes(chip.id);
-                    const showPopup = activeTooltip?.chipId === chip.id;
 
                     return (
-                      <div key={chip.id} className="relative">
-                        {/* Tooltip Popup Flutuante em 17px (Exatamente 5 Palavras em PT-BR por 5s) */}
-                        {showPopup && (
-                          <div 
-                            className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 z-50 bg-[#161a27] text-amber-200 border-2 border-amber-400/90 shadow-2xl shadow-black px-3.5 py-2 rounded-2xl whitespace-nowrap animate-bounce flex items-center gap-1.5 pointer-events-none"
-                            style={{ fontSize: '17px', lineHeight: '1.2' }}
-                          >
-                            <Info className="w-4 h-4 text-amber-400 shrink-0" />
-                            <span className="font-extrabold tracking-wide text-amber-200">
-                              {chip.tooltip5Words}
-                            </span>
-                            {/* Seta do Balão */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-amber-400" />
-                          </div>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={() => handleChipClick(chip.id, chip.tooltip5Words)}
-                          className={`text-xs px-2.5 py-1.5 rounded-xl border transition-all flex items-center gap-1 cursor-pointer select-none font-semibold ${
-                            isSelected
-                              ? 'bg-amber-500/25 border-amber-500 text-amber-200 shadow-sm shadow-amber-500/20 font-bold'
-                              : 'bg-[#151924] border-[#242b3d] text-slate-300 hover:text-white hover:border-slate-500'
-                          }`}
-                        >
-                          {isSelected && <Check className="w-3 h-3 text-amber-400 shrink-0" />}
-                          <span>{chip.label}</span>
-                        </button>
-                      </div>
+                      <button
+                        key={chip.id}
+                        type="button"
+                        onClick={() => handleChipClick(chip.id)}
+                        className={`text-xs px-2.5 py-1.5 rounded-xl border transition-all flex items-center gap-1 cursor-pointer select-none font-semibold ${
+                          isSelected
+                            ? 'bg-amber-500/25 border-amber-500 text-amber-200 shadow-sm shadow-amber-500/20 font-bold'
+                            : 'bg-[#151924] border-[#242b3d] text-slate-300 hover:text-white hover:border-slate-500'
+                        }`}
+                        title={chip.tooltip5Words}
+                      >
+                        {isSelected && <Check className="w-3 h-3 text-amber-400 shrink-0" />}
+                        <span>{chip.label}</span>
+                      </button>
                     );
                   })}
+
+                  {/* Seção de Fisiologia 3D Ultra-realista */}
+                  {category.id === 'video_model_modes' && (
+                    <div className="w-full mt-2.5 pt-2.5 border-t border-[#1c2333] flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                          <Dna className="w-3.5 h-3.5" />
+                          Modelos Fisiologia 3D (Auditoria 360º)
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setIsPhysiologyModalOpen(true)}
+                          className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 transition cursor-pointer flex items-center gap-1"
+                        >
+                          <BookOpen className="w-3 h-3" />
+                          <span>Ver Catálogo & Criar</span>
+                        </button>
+                      </div>
+
+                      {currentPhysioPreset && (
+                        <div className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/40 flex items-center justify-between gap-2 text-xs">
+                          <div className="flex flex-col">
+                            <span className="font-bold text-slate-100 flex items-center gap-1">
+                              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                              {currentPhysioPreset.label}
+                            </span>
+                            <span className="text-[11px] text-slate-400">
+                              {currentPhysioPreset.tooltip5Words}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setIsPhysiologyModalOpen(true)}
+                            className="px-2 py-0.5 rounded bg-cyan-500 text-black text-[10px] font-black uppercase cursor-pointer"
+                          >
+                            Trocar
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -369,6 +447,23 @@ export const RightPanel: React.FC<RightPanelProps> = ({
           })}
         </div>
       </div>
+
+      {/* Modal Oficial de Presets de Fisiologia Humana 3D & Criação Manual */}
+      <PhysiologyModal
+        isOpen={isPhysiologyModalOpen}
+        onClose={() => setIsPhysiologyModalOpen(false)}
+        selectedId={state.selectedPhysiologyId}
+        onSelectPreset={handleSelectPhysiologyPreset}
+        onApplyPromptDirect={handleApplyPromptDirect}
+      />
+
+      {/* Modal Explicativo Geral de Tags com 5 Exemplos de Uso */}
+      <TagsGuideModal
+        isOpen={isTagsModalOpen}
+        onClose={() => setIsTagsModalOpen(false)}
+        selectedTags={state.preferences || []}
+        onToggleTag={handleChipClick}
+      />
     </aside>
   );
 };

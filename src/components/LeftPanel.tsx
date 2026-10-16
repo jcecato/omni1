@@ -242,26 +242,35 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
               />
 
               {/* Medidor de Palavras da Cena */}
-              <div className={`p-2 rounded-xl border text-xs flex items-center justify-between gap-2 ${
-                analysis.status === 'ideal'
-                  ? 'bg-emerald-950/35 border-emerald-700/60 text-emerald-300'
-                  : analysis.status === 'warning'
-                  ? 'bg-amber-950/45 border-amber-700/70 text-amber-300'
-                  : 'bg-slate-900 border-slate-800 text-slate-400'
-              }`}>
-                <div className="flex items-center gap-1.5 font-bold">
-                  {analysis.status === 'ideal' ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  ) : (
-                    <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  )}
-                  <span>{analysis.wordCount} / 20 palavras</span>
-                  <span className="text-slate-500">•</span>
-                  <span>~{analysis.estimatedSeconds}s (1.2x)</span>
+              <div className="flex flex-col gap-1">
+                <div className={`p-2 rounded-xl border text-xs flex items-center justify-between gap-2 ${
+                  analysis.status === 'ideal'
+                    ? 'bg-emerald-950/35 border-emerald-700/60 text-emerald-300'
+                    : analysis.status === 'warning'
+                    ? 'bg-red-950/30 border-red-500/40 text-red-300'
+                    : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}>
+                  <div className="flex items-center gap-1.5 font-bold">
+                    {analysis.status === 'ideal' ? (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    ) : analysis.status === 'warning' ? (
+                      <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                    ) : (
+                      <AlertCircle className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    )}
+                    <span>{analysis.wordCount} / 20 palavras</span>
+                    <span className="text-slate-500">•</span>
+                    <span>~{analysis.estimatedSeconds}s (1.2x)</span>
+                  </div>
+                  <span className="font-mono font-bold text-[11px] uppercase">
+                    {analysis.status === 'ideal' ? '✓ Ideal (16-20)' : analysis.status === 'warning' ? '⚠ Atenção (>20)' : 'Aguardando'}
+                  </span>
                 </div>
-                <span className="font-mono font-bold text-[11px] uppercase">
-                  {analysis.status === 'ideal' ? '✓ Ideal (16-20)' : analysis.status === 'warning' ? '⚠ Atenção (>20)' : 'Aguardando'}
-                </span>
+                {analysis.status === 'warning' && (
+                  <p className="text-[10px] text-red-300/90 leading-tight bg-red-950/20 px-2.5 py-1.5 rounded-lg border border-red-500/20">
+                    <strong className="text-red-200">Motivo do alerta:</strong> Em um bloco de 10s a 1.2x, o teto ideal de fala com clareza é de 16 a 20 palavras. Com {analysis.wordCount} palavras, a narração atropelará o tempo do vídeo (10s). Reduza a fala para manter a cadência perfeita.
+                  </p>
+                )}
               </div>
             </div>
           );
@@ -270,10 +279,17 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
 
       {/* 4. Caixa Ideia Visual da Cena */}
       <div className="bg-[#0b0d13] border border-[#242b3d] rounded-2xl p-3.5 flex flex-col gap-2">
-        <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
-          <Video className="w-4 h-4 text-amber-400" />
-          Ideia Visual da Cena / O que aparece nos Quadros
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
+            <Video className="w-4 h-4 text-amber-400" />
+            Ideia Visual da Cena / O que aparece nos Quadros
+          </label>
+          {state.selectedPhysiologyId && (
+            <span className="text-[10px] font-mono font-bold text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded-full border border-cyan-500/30 flex items-center gap-1">
+              🧬 Fisiologia 3D Ativa
+            </span>
+          )}
+        </div>
         <textarea
           rows={2}
           value={state.visualIdea}
